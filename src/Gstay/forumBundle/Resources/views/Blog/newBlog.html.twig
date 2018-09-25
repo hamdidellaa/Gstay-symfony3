@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+{% block title %} Blog Dtails{% endblock %}
+{% block body %}
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <div class="container">
+            <!-- Logo -->
+            <div class="logo-banner text-center">
+                <a href="" title="">
+                    <img src="images/logo-banner.png" alt="">
+                </a>
+            </div>
+            <!-- Logo -->
+        </div>
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main">
+        <div class="container">
+            <div class="main-cn bg-white clearfix">
+                <!--Breakcrumb-->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li>Blog Detail</li>
+                    </ul>
+                    <!-- Search Blog -->
+                    <div class="search-blog">
+
+                    </div>
+                    <!-- Search Blog -->
+                </section>
+                <!--End Breakcrumb-->
+                <section class="blog-content">
+                    <div class="row">
+
+                        <!-- Blog Right -->
+                        <div class="col-md-9 col-md-push-3">
+                            <!-- Post Singel -->
+                            <div class="post post-single">
+
+                                {{ form_start(form)}}
+                                <!-- Leave Comment -->
+                                <div class="leave-comment">
+
+                                    <div class="form-contact row">
+                                        <h2>Submit Blog</h2>
+
+                                            <div class="col-sm-6">
+
+                                                    <h4>Title</h4>
+
+                                                <div class="field-input">
+                                                    {{ form_widget(form.titre, {'id':'idtitle','attr': {'class': 'form-control','placeholder':'Title' }}) }}
+
+                                                </div>
+                                                <h4>Image</h4>
+                                                    <div class="field-input">
+                                                        {{ form_widget(form.imageFile) }}
+
+
+                                                    </div>
+
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <h4>Content</h4>
+                                                <div class="form-field form-field-area">
+
+                                                    {{ form_widget(form.Description, {'id':'desckeditor','attr': {'class': 'ckeditor' }}) }}
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-field">
+                                                    {{ form_widget(form.add, {'attr': {'class': 'awe-btn awe-btn-1 awe-btn-medium' }}) }}
+
+                                                </div>
+                                            </div>
+
+                                    </div>
+                                </div>
+                                {{ form_end(form) }}
+
+                            </div>
+                            <!-- End Post Single --
+                        </div>
+                        <!-- End Blog Right -->
+
+                        <!-- Blog Left -->
+                        <div class="col-md-3 col-md-pull-9">
+
+                            <!-- Widget Category Blog -->
+
+                        </div>
+                        <!-- End Blog Left -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+{% endblock%}

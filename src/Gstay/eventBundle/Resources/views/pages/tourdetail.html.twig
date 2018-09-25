@@ -1,0 +1,567 @@
+
+
+{% extends 'base.html.twig' %}
+{% block title %} Tour : {{ tour.title }}   {% endblock %}
+{% block body %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQkO9t0ugd5cHC12zbNh6uNGCVlozspIg"
+        async defer></script>
+<link rel="stylesheet" href="{{ asset('notif/lobibox.min.css') }}"/>
+
+    <script>
+
+        var disqus_config = function () {
+            this.page.url = '{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}';  // Replace PAGE_URL with your page's canonical URL variable        // Here you need to add the identifier of this page, for example if is a page of a blog, the identifier would be : /blog/april/how-to-breath/12
+            this.page.identifier = '{{ tour.id }}'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+
+        (function() {  // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+
+            s.src = '//mywebsite.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script src="{{ asset('ajax/jquery-1.8.0.js') }}"> </script>
+
+ <script src='https://www.google.com/recaptcha/api.js'></script>
+
+
+
+  <!-- Modal -->
+
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Get a ticket for {{ tour.title }} </h4>
+        </div>
+        <div class="modal-body">
+           {% if app.user %}
+          <p></p>
+            <form class="controleticket">
+
+
+            <input " value="{{ app.user.id }} " type="text" name="iduser" hidden>
+             <input " value="{{ tour.id }} " type="text" name="idtour" hidden>
+             <input  value="{{ app.user.type }} " type="text" name="type" hidden>
+              <label >Email:</label>
+				<input class="form-control" value="{{ app.user.email }} " type="text" name="email" disabled>
+				<input   type="number" min="1" max="1" id="ticketnumber" name="nbticket" value="1" onchange="checknbticket({{ tour.prix }},'{{ tour.id }}')" hidden>
+				<p id="prixtotal" > Total price:  </p> <span  id="error" style="background-color: red"></span>
+				 <div class="g-recaptcha" data-sitekey="6LcHuRUUAAAAAG6MBUmWou5wKbQzIzlu_Bc7gbUH"></div>
+
+
+</form>
+          {% else %}
+
+          <div class="row">
+         <div class=" col-md-2">
+         </div>
+         <div class=" col-md-8">
+
+            <form action="{{ path("fos_user_security_check") }}" method="post">
+                                    {% if csrf_token %}
+                                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+                                    {% endif %}
+
+                                <h2 class="user-profile__title">Sign in</h2>
+                                <p>Access your account information and manage your bookings.</p>
+                                <div class="field-input">
+                                    <input type="text" id="username" class="form-control" name="_username"  required="required" placeholder="Username"  />
+                                </div>
+                                <div class="field-input">
+                                    <input type="password" class="form-control" id="password" name="_password" required="required"  placeholder="Password" />
+                                </div>
+                                <br>
+
+                                <div class="field-input">
+                                    <input type="submit" class="awe-btn awe-btn-1 awe-btn-medium" id="_submit" name="_submit" value="Login" />
+
+                                </div>
+                    </form>
+
+                </div>
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="modal-footer">
+       {% if app.user %}
+        <button  class="btn btn-success" id="getbtn" >Get </button>
+        {% endif %}
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<div id="wrap">
+
+
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+                <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+            </a>
+        </div>
+        <!-- Logo -->
+
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main main-dt">
+        <div class="container">
+            <div class="main-cn detail-page bg-white clearfix">
+
+                <!-- Breakcrumb -->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href="{{ path('tourslist') }}"><i class="fa fa-home"></i></a></li>
+                        <li><a href="{{ path('tourslist') }}" title="">Tours</a></li>
+
+                    </ul>
+
+                </section>
+                <!-- End Breakcrumb -->
+
+                <!-- Header Detail -->
+                <section class="head-detail">
+                    <div class="head-dt-cn">
+                        <div class="row">
+                        <div class="col-sm-7">
+                            <h1> {{ tour.title }} </h1>
+                            <div class="start-address">
+                                        <span class="star">
+                                            <i class="glyphicon glyphicon-star"></i>
+                                            <i class="glyphicon glyphicon-star"></i>
+                                            <i class="glyphicon glyphicon-star"></i>
+                                            <i class="glyphicon glyphicon-star"></i>
+                                            <i class="glyphicon glyphicon-star"></i>
+                                        </span>
+                                <address class="address">
+                                    {{ tour.datedebut| date('Y/m/d') }} __to__   {{ tour.datefin| date('Y/m/d') }}
+                                </address>
+                            </div>
+                        </div>
+
+                            <div class="col-sm-5 text-right">
+
+                                <p class="price-book">
+                               {% if tour.statut == "actif"  %}
+                                    {% if  app.user  %}
+                                        {% if tour.idOrganisateur.id !=  app.user.id  %}
+                                    <button type="button" class="awe-btn awe-btn-1 awe-btn-lager" data-toggle="modal"
+                                            data-target="#myModal">Get a Ticket
+                                    </button>
+
+                                        {% endif %}
+
+                                        {% else %}
+                                            <button type="button" class="awe-btn awe-btn-1 awe-btn-lager" data-toggle="modal"
+                                                    data-target="#myModal">Get a Ticket
+                                            </button>
+
+                                    {% endif %}
+                                {% endif %}
+                                 <!--   <a href="" title="" class="awe-btn awe-btn-1 awe-btn-lager">Book Now</a>
+                               --> </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End Header Detail -->
+
+                <!-- Detail Slide -->
+                <section class="detail-slider">
+                    <!-- Lager Image -->
+                    <div class="slide-room-lg">
+                        <div id="slide-room-lg">
+                           <img src=" {% if tour.imageName != "" %} {{ asset('images/products/' ~ tour.imageName ) }} {% else %}{{ asset('images/products/noimage.jpg' ) }} {% endif %} " alt="">
+
+                        </div>
+                    </div>
+                    <!-- End Lager Image -->
+                    <!-- Thumnail Image -->
+                    <div class="slide-room-sm">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div id="slide-room-sm">
+                                    <img src=" {% if tour.imageName != "" %} {{ asset('images/products/' ~ tour.imageName ) }} {% else %}{{ asset('images/products/noimage.jpg' ) }} {% endif %} " alt="">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Thumnail Image -->
+                </section>
+                <!-- End Detail Slide -->
+
+                <!-- Tour Overview -->
+                <section class="tour-overview detail-cn" id="tour-overview">
+                    <div class="row">
+                        <div class="col-lg-3 detail-sidebar">
+                            <div class="scroll-heading">
+                                <h2>overview</h2>
+                                <hr class="hr">
+                                <a href="#optional-acitivites" title="">Optional activities</a>
+                                <a href="#accomodation" title="">accomodation</a>
+
+                                <a href="#tour-necessary">No Tip Necessary</a>
+                            </div>
+                        </div>
+
+                        <!-- Tour Overview Content -->
+                        <div class="col-lg-9 tour-overview-cn">
+
+                            <!-- Description -->
+                            <div class="tour-description">
+                                <h2 >
+                                    Description
+                                </h2>
+                                <div class="tour-detail-text">
+
+                                        {% autoescape %}
+                                            {{ tour.description|raw }}
+                                        {% endautoescape %}
+
+                                </div>
+                            </div>
+                            <!-- End Description -->
+
+                            <div class="tour-itinerary">
+                                <h2 class="title-detail">Itinerary</h2>
+                                <!-- Accordion -->
+                                <div class="panel-group no-margin" id="accordion">
+
+                                    <!-- Accordion 1 -->
+                                    {% for days in days %}
+                                    <div class="panel">
+                                        <div class="panel-heading" id="{{ days.id }}">
+                                            <h4 class="panel-title">
+
+                                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#{{ days.id + 100}}" aria-expanded="false">
+                                                    <small>Day {{ days.nbday }}:</small>{{ days.address }}
+                                                    <span class="icon fa fa-angle-down"></span>
+                                                </a>
+                                            </h4>
+
+                                        </div>
+                                        <div  id="{{ days.id + 100 }}" class="panel-collapse collapse in" aria-labelledby="{{ days.id }}">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-12" >
+                                                        <div class="col-md-7" >
+                                                            {% autoescape %}
+                                                                {{ days.description|raw }}
+                                                            {% endautoescape %}
+
+                                                        </div>
+                                                        <div class="col-md-5" >
+
+                                                                <div style="width: 100%"><iframe width="100%" height="200" src="http://www.citymaps.ie/create-google-map/map.php?width=100%&amp;height=200&amp;hl=en&amp;coord={{ days.latitude }},{{ days.longitude }}&amp;q={{ days.address }} +()&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"> </iframe></div>
+                                                                <p class="about-area-location"><i class="fa  fa-map-marker"></i>{{ days.address }}</p>
+
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Accordion 1 -->
+                                {% endfor %}
+
+                                <!-- Accordion -->
+                                 <div class="row">
+<br><br>
+                                                 <div class="col-lg-8 col-lg-offset-2">
+                                            <div id="mapp" style="height: 400px; width: 500px;">
+                                                  </div>
+                                                 </div>
+
+                            </div>
+
+                        </div>
+                        <!-- End Tour Overview Content -->
+
+                    </div>
+
+                </section>
+                <!-- End Tour Overview -->
+
+                <!-- Optional Activities -->
+                <section class="optional-acitivites detail-cn" id="optional-acitivites">
+                    <div class="row">
+                        <div class="col-lg-3 detail-sidebar">
+                            <div class="scroll-heading">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-9 optional-acitivites-cn">
+                            <!-- Optional Text -->
+
+                            <!-- End Optional Text -->
+
+                             <h2>Optional Activities</h2>
+                             <br>
+                            <div class="tour-detail-text">
+                                {% autoescape %}
+                                    {{ tour.optActivity|raw }}
+                                {% endautoescape %}
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End Optional Activities -->
+
+                <!-- Accomodation -->
+                <section class="accomodation detail-cn" id="accomodation">
+                    <div class="row">
+                        <div class="col-lg-3 detail-sidebar">
+                            <div class="scroll-heading">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-9 accomodation-cn">
+                          <h2>accomodation</h2>
+                          <br>
+                            <div class="tour-detail-text">
+                                {% autoescape %}
+                                    {{ tour.accomodation|raw }}
+                                {% endautoescape %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End Accomodation-->
+
+                <!-- Meals -->
+
+                <!-- End Meals-->
+
+                <!-- Necessary -->
+                <section class="tour-necessary detail-cn" id="tour-necessary">
+                    <div class="row">
+                        <div class="col-lg-3 detail-sidebar">
+                            <div class="scroll-heading">
+                                <h2>No Tip Necessary</h2>
+                                <hr class="hr">
+                                <a href="#tour-overview" title="">Overview</a>
+                                <a href="#optional-acitivites" title="">Optional activities</a>
+                                <a href="#accomodation" title="">Accomodation</a>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-9 tour-necessary-cn">
+                        <h2>No Tip Necessary</h2>
+                        <br>
+                            <div class="tour-detail-text">
+                                {% autoescape %}
+                                    {{ tour.tips|raw }}
+                                {% endautoescape %}
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                <!-- End Necessary-->
+
+                <section class="detail-footer tour-detail-footer detail-cn">
+                    <div class="row">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-9 detail-footer-cn text-right">
+                            <p class="price-book">
+                                From-<span>DT {{ tour.prix }}</span>
+                                {% if tour.statut == "actif"  %}
+                                    {% if  app.user  %}
+                                        {% if tour.idOrganisateur.id !=  app.user.id  %}
+                                    <button type="button" class="awe-btn awe-btn-1 awe-btn-lager" data-toggle="modal"
+                                            data-target="#myModal">Get a Ticket
+                                    </button>
+
+                                        {% endif %}
+
+                                        {% else %}
+                                            <button type="button" class="awe-btn awe-btn-1 awe-btn-lager" data-toggle="modal"
+                                                    data-target="#myModal">Get a Ticket
+                                            </button>
+
+                                    {% endif %}
+                                {% endif %}
+                            </p>
+                            <br> <br>
+                            <div id="disqus_thread"></div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+
+    <script>
+ $(function() {
+
+//twitter bootstrap script
+	$("#getbtn").click(function(){
+	 var v = grecaptcha.getResponse();
+
+        if(v.length == 0)
+        {
+alert('are you humain !!!  please check the recaptcha');
+        }else
+        {
+		   	$.ajax({
+    		   	type: "POST",
+			url: "{{ path('ticket_tour') }}",
+			data: $('form.controleticket').serialize(),
+        		success: function(msg){
+        		var respon = msg ;
+        		if (msg == 'non') {
+                            Lobibox.notify('warning', {
+                                width: 600,
+                                msg: '  You already get a ticket for this tour .'
+                            });
+                            $("#myModal").modal('hide');
+                        } else {
+
+                            Lobibox.notify('success', {
+                                width: 600,
+                                msg: '  please check your email to get your ticket . thank you for choosing us  '
+                            });
+                            $("#myModal").modal('hide');
+            var url = '{{ path("ticket_pdf") }}?ref='+respon;
+
+            window.location.replace(url);
+
+
+ 		        	document.getElementById('ticketnumber').value=1;
+ 		        	document.getElementById('message').value="";
+ 		        	document.getElementById('prixtotal').innerHTML ="";
+
+ 		        }}
+ 		        ,
+			error: function(){
+				alert("failure");
+				}
+      			});
+
+      			}
+	});
+
+});
+
+
+</script>
+     <script >
+
+
+
+function checknbticket(x,idtour) {
+
+var nb = document.getElementById('ticketnumber').value;
+var prixtotal = x * nb ;
+document.getElementById('prixtotal').innerHTML = "Total price: "+prixtotal+" DT "  ;
+
+  var hamdi = new XMLHttpRequest();
+        hamdi.open("get","{{ asset('ajax/modaltour/tourmodaltestnb.php?nb') }}="+nb+"&idtour="+idtour,true);
+        hamdi.send() // avec le GET  les parametre sont vides ;
+        hamdi.onreadystatechange = function result()
+        {
+            document.getElementById("error").innerHTML= hamdi.responseText;
+
+
+
+        }
+ var error = document.getElementById('error').innerHTML;
+ if(error.length > 0 )
+     {
+     document.getElementById('getbtn').setAttribute('disabled','disabled');
+
+     }else {
+     document.getElementById('getbtn').removeAttribute("disabled");
+     }
+
+
+
+}
+
+
+
+
+
+
+     </script>
+
+
+
+
+   {% endblock body %}
+{% block js %}
+
+<script src="{{ asset('notif/lobibox.js') }}"></script>
+
+
+          <script type="text/javascript">
+        var locations = [
+                {% for days in days %}
+                 [' day  {{ days.nbday }}:: {{ days.address }}', {{ days.latitude }}, {{ days.longitude }}, {{ days.id }}],
+                {% endfor %}
+
+
+
+
+        ];
+
+        var map = new google.maps.Map(document.getElementById('mapp'), {
+            zoom: 3,
+            center: new google.maps.LatLng(34.17782559332976, 10.749950408935547),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        var infowindow = new google.maps.InfoWindow();
+
+        var marker, i;
+
+        for (i = 0; i < locations.length; i++) {
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                map: map
+            });
+
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                    infowindow.setContent(locations[i][0]);
+                    infowindow.open(map, marker);
+                }
+            })(marker, i));
+        }
+    </script>
+
+    {% endblock js %}

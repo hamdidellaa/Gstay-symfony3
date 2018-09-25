@@ -1,0 +1,173 @@
+{% extends 'base.html.twig' %}
+{% block title %} mon profile  {% endblock %}
+{% block body %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('notif/lobibox.min.css') }}"/>
+<!-- Wrap -->
+    <style>
+
+        span.step {
+            background: #ff6868;
+
+            -moz-border-radius: 0.8em;
+            -webkit-border-radius: 0.8em;
+            color: #ffffff;
+            display: inline-block;
+            font-weight: bold;
+            line-height: 1.3em;
+            margin-right: 1px;
+            text-align: center;
+            width: 1.2em;
+        }
+
+    </style>
+
+    <!--Banner-->
+    <div id="wrap">
+
+
+        <!--Banner-->
+        <section class="sub-banner">
+            <!--Background-->
+            <div class="bg-parallax bg-1"></div>
+            <!--End Background-->
+            <!-- Logo -->
+            <div class="logo-banner text-center">
+                <a href="" title="">
+
+                    <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+                </a>
+            </div>
+            <!-- Logo -->
+        </section>
+        <!--End Banner-->
+
+        <!-- Main -->
+        <div class="main">
+            <div class="container">
+                <div class="main-cn element-page bg-white clearfix">
+                    <!--Breakcrumb-->
+                    <section class="breakcrumb-sc">
+                        <ul class="breadcrumb arrow">
+                            <li><a href="{{ path('listtourprofile') }}"><i class="fa fa-home"></i></a></li>
+                            <li>list Event</li>
+                        </ul>
+                    </section>
+                    <!--End Breakcrumb-->
+
+                    <section class="user-profile">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="user-profile__header">
+                                    <h4>{{ profile.nom }}_{{ profile.prenom }}</h4>
+                                    <span>Member Sincen {{ profile.dateInscrit | date('M') }} {{ profile.dateInscrit | date('Y') }}</span>
+                                    <p>
+                                    <p>
+
+                                        <img src="{{ asset('images/products/'~ profile.imageName) }}" alt="">
+                                    </p>
+                                </div>
+
+                                <ul class="user-profile__navigation">
+
+                                    <li ><a href="{{ path('listeventprofile') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">My Events {%  if errorevent >0 %} <span class="step">{{ errorevent }}</span> {% endif %}</a></li>
+                                    <li ><a href="{{ path('listtourprofile') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">My Tours {%  if errortour >0 %} <span class="step">{{ errortour }}</span> {% endif %}</a></li>
+                                    <li class="current"> <a href="{{ path('profileEvent') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">My profile</a></li>
+                                    <li><a href="{{ path('message_profile') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">My reviews {%  if msg > 0 %} <span class="step">{{ msg }}</span> {% endif %}</a></li>
+                                    <li><a href="{{path('profileEventSetting') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">Settings</a></li>
+                                    <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Wishlist</a></li>
+                                    <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+                                </ul>
+                        </div>
+                        <div class="col-md-9">
+
+
+                            <div class="my-profile">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 class="my-profile__title">Personal Information</h4>
+                                        <ul>
+                                            <li><span>First Name</span>{{ profile.prenom }}</li>
+                                            <li><span>Last Name</span>{{ profile.nom }}</li>
+                                            <li><span>Email</span>{{ profile.idUser.email }}</li>
+                                            <li><span>Phone number</span>{{ profile.tel }}</li>
+
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <h4 class="my-profile__title">Location</h4>
+                                        <ul>
+                                            <li><span>State</span>{{ profile.gouvernerat }}</li>
+                                            <li><span> City</span>{{ profile.cite }}</li>
+                                            <li><span>Street Address</span>{{ profile.rue }}</li>
+                                            <li><span>phone number</span>{{ profile.tel }}</li>
+
+                                            <li><span>date of account  </span>{{ profile.dateInscrit | date('y/m/d') }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <p>
+                                    you can edit your profile
+                                </p>
+
+
+                                <a href="{{ path('profileEventSetting') }}" class="btn">Edit profile</a>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+        {% if errortour >0 %}
+            <script>
+                $(document).ready(function(){
+                    Lobibox.notify('warning', {
+                        size: 'normal',
+                        width: 10000,
+
+                        delay: 10000,
+                        position: 'top right',
+
+                        msg: '  you have  {{ errortour }} inactive tour . check it out  '
+                    });
+                });
+
+
+            </script>
+
+        {% endif %}
+        {% if errorevent >0 %}
+            <script>
+                $(document).ready(function(){
+                    Lobibox.notify('warning', {
+                        size: 'normal',
+                        width: 10000,
+
+                        delay: 10000,
+                        position: 'center top',
+
+                        msg: '  you have  {{ errorevent }} inactive event . check it out  '
+                    });
+                });
+
+
+            </script>
+
+        {% endif %}
+
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="{{ asset('notif/lobibox.js') }}"></script>
+
+
+{% endblock %}

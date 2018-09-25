@@ -1,0 +1,297 @@
+{% extends 'base.html.twig' %}
+{% block title %} Start Promo {% endblock %}
+{% block body %}
+
+
+
+<!-- Wrap -->
+<div id="wrap">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiPsrwiJnGZmu3MGDppHm8XX8cl9NK25s" type="text/javascript"></script>
+
+    <!--Banner-->
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+
+                <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+            </a>
+        </div>
+        <!-- Logo -->
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main">
+        <div class="container">
+            <div class="main-cn element-page bg-white clearfix">
+                <!--Breakcrumb-->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href=""><i class="fa fa-home"></i></a></li>
+                        <li>Edit House</li>
+                    </ul>
+                </section>
+                <!--End Breakcrumb-->
+
+                <section class="user-profile">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="user-profile__header">
+                                <h4>{{ profile.firstName }}_{{ profile.lastName}}</h4>
+                                <span>Member Sincen {{ profile.dateInscrit | date('M') }} {{ profile.dateInscrit | date('Y') }}</span>
+                                <p>
+
+                                    <img src="{{ asset('images/products/'~ profile.imageName) }}" alt="">
+                                </p>
+                            </div>
+
+                            <ul class="user-profile__navigation">
+                                <li><a href="{{path('listlogement') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">List Logements</a></li>
+                                <li><a href="{{path('listreservation') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">My Bookings</a></li>
+                                <li ><a href="{{path('meslogements') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">Mes Logements</a></li>
+
+                                <li class="current" ><a href="{{path('profilehostguest') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">My profile</a></li>
+
+                                <li><a href="{{path('review') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">My reviews</a></li>
+                                <li><a href="{{path('setting') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">Settings</a></li>
+                                <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Wishlist</a></li>
+                                <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-9">
+
+                            <div class="user-form">
+                                <div class="row">
+                                    <h3> Information of your Promo</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h3> Global Information</h3>
+
+
+
+                                        {{ form_start(form, {'attr': {'onsubmit':'return validateForm()' } })}}
+                                        <div class="field-input">
+                                            <label> Title</label>
+
+                                            {{ form_widget(form.nomlogement, {'attr': {'class': 'form-control' }}) }}
+                                        </div>
+
+
+                                        <div class="field-input">
+                                            <label> room number</label>
+                                            {{ form_widget(form.nbrchambre, {'attr': {'class': 'form-control' }}) }}
+
+                                        </div>
+
+                                        <div class="field-input">
+                                            <label> Description</label>
+                                            {{ form_widget(form.description, {'attr': {'class': 'ckeditor' }}) }}
+
+                                        </div>
+
+                                        <div class="field-input">
+                                            <label> PRice</label>
+                                            {{ form_widget(form.prix, {'attr': {'class': 'form-control' }}) }}
+
+                                        </div>
+
+                                        <div class="field-input">
+                                            <label>number of rooms availble</label>
+                                            {{ form_widget(form.nbrchambredispo, {'attr': {'class': 'form-control' }}) }}
+
+                                        </div>
+
+
+
+
+
+                                           </div>
+
+
+
+
+
+                                    <div class="col-md-6">
+                                        <h3> Location  </h3>
+                                        <script type="text/javascript" src="{{ asset('bundles/app/js/library/jquery-3.1.1.min.js') }}"></script>
+
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                var mapOptions = {
+                                                    center: new google.maps.LatLng(36.8, 10.1),
+                                                    zoom: 7,
+                                                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                                                };
+
+                                                var infoWindow = new google.maps.InfoWindow();
+                                                var latlngbounds = new google.maps.LatLngBounds();
+                                                var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
+                                                google.maps.event.addListener(map,
+                                                        'click',
+                                                        function (e) {
+
+                                                            // alert("Latitude: " + e.latLng.lat() + "\r\nLongitude: " + e.latLng.lng());
+                                                            document.getElementById("lat").value = e.latLng.lat();
+                                                            document.getElementById("long").value = e.latLng.lng();
+                                                            //document.getElementById("p2").innerHTML = e.latLng.lng();
+
+                                                        });
+                                                marker = new google.maps.Marker({
+                                                    map: map,
+                                                    draggable: true,
+                                                    animation: google.maps.Animation.DROP,
+                                                    position: { lat: 36.8, lng: 10.1 }
+                                                });
+                                                marker.addListener('click', toggleBounce);
+                                                //marker.setPosition(tx);
+                                                google.maps.event.addListener(marker,
+                                                        'dragend',
+                                                        function () {
+                                                            var lat = marker.getPosition().lat();
+                                                            var lng = marker.getPosition().lng();
+                                                            /*marke
+                                                             $('#lat').val(lat);
+                                                             $('#lng').val(lng);*/
+                                                            /*$.ajax({
+                                                             url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true",
+                                                             success: function (res) {
+                                                             console.log(res.results[0].formatted_address);
+                                                             }
+                                                             })*/
+                                                            var latlng = new google.maps.LatLng(lat, lng);
+                                                            var geocoder = geocoder = new google.maps.Geocoder();
+                                                            geocoder.geocode({ 'latLng': latlng },
+                                                                    function (results, status) {
+
+                                                                        if (status == google.maps.GeocoderStatus.OK) {
+                                                                            if (results[1]) {
+                                                                                //alert("Location: " + results[1].formatted_address);
+                                                                                $(document).find("#cityAdresse").val(results[1].formatted_address);
+                                                                                $("#cityAdresse").val(results[1].formatted_address);
+                                                                                $("#laltitude").val(results[1].geometry.location.lat());
+                                                                                $("#longitude").val(results[1].geometry.location.lng());
+                                                                            }
+                                                                        }
+                                                                    });
+
+                                                        });
+                                                google.maps.event.addListener(marker,
+                                                        'tx',
+                                                        function () {
+                                                            var tx = marker.setPosition().tx();
+                                                            $('#tx').val(tx);
+
+                                                        });
+
+
+                                                function toggleBounce() {
+                                                    if (marker.getAnimation() !== null) {
+                                                        marker.setAnimation(null);
+                                                    } else {
+                                                        marker.setAnimation(google.maps.Animation.BOUNCE);
+                                                    }
+                                                }
+
+                                            });
+
+
+                                        </script>
+
+                                        <center>
+                                            <div id="dvMap" style="width: 300px; height: 200px;">
+                                            </div>
+                                        </center>
+
+                                        <div class="field-input">
+
+                                            <label> Adreese </label>
+                                            {{ form_widget(form.adresse, { 'id' : 'cityAdresse','attr': {'class': 'form-control'}}) }}
+
+                                        </div>
+                                        <div class="field-input">
+
+                                            <label> altitude </label>
+                                            {{ form_widget(form.altitude, { 'id' : 'laltitude','attr': {'class': 'form-control' }}) }}
+                                        </div>
+                                        <div class="field-input">
+
+                                            <label> longitude </label>
+                                            {{ form_widget(form.longitude, {'id' : 'longitude','attr': {'class': 'hidden' }}) }}
+                                        </div>
+                                        <div class="field-input">
+
+                                            <label> Postal code </label>
+                                            {{ form_widget(form.codepostal, {'attr': {'class': 'form-control'}}) }}
+                                        </div>
+                                        <div class="field-input" hidden>
+                                            <label> Date add </label>
+                                            {{ form_widget(form.dateajout, {'attr': {'class': 'form-control'}}) }}) }}
+                                        </div>
+
+                                        <div class="field-input">
+                                            {{ form_widget(form.imageFile) }}
+
+                                        </div>
+                                        <div class="field-input">
+                                            {{ form_widget(form.Save, {'attr': {'class': 'awe-btn awe-btn-1 awe-btn-medium' }}) }}
+
+
+                                        </div>
+                                    </div>
+
+                                    {{ form_end(form) }}
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+
+    <script src="{{ asset('notif/lobibox.js') }}"></script>
+    <script src="{{ asset('notif/messageboxes.js') }}"></script>
+    <script>
+        function validateForm() {
+
+
+            var s1=document.getElementById('gstay_guesthostbundle_logement_nomlogement').value;
+            var s2=document.getElementById('gstay_guesthostbundle_logement_nbrchambre').value;
+            var s3 = document.getElementById('gstay_guesthostbundle_logement_description').value;
+            var s4 = document.getElementById('gstay_guesthostbundle_logement_prix').value;
+            var s5 = document.getElementById('gstay_guesthostbundle_logement_codepostal').value;
+
+
+
+
+
+
+
+
+            if(s1 =="" || s2=="" || s3=="" || s4=="" || s5==""  )
+            {
+                Lobibox.notify('error', {
+                    title: 'rooms error ',
+                    msg: 'please complete the form.'
+                });
+                return false;
+            }
+
+
+
+
+
+        }
+    </script>
+
+
+    {% endblock %}
+

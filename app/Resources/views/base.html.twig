@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title> {% block title %}  {% endblock %} </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Font Google -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400%7COpen+Sans:300,400,600' rel='stylesheet' type='text/css'>
+    <!-- End Font Google -->
+    <!-- Library CSS -->
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/library/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/library/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/library/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/library/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/library/jquery.mb.YTPlayer.min.css') }}">
+    <!-- End Library CSS -->
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('contdown/compiled/flipclock.css') }}">
+
+
+
+
+</head>
+<body>
+<!-- Preloader -->
+<div id="preloader">
+    <div class="tb-cell">
+        <div id="page-loading">
+            <div></div>
+            <p>Loading</p>
+        </div>
+    </div>
+</div>
+<div id="wrap">
+
+    <!-- Header -->
+    <header id="header" class="header">
+        <div class="container">
+
+            <!-- Logo -->
+            <div class="logo float-left">
+                <a href="index.html" title=""><img src="{{ asset('bundles/app/images/logo.png') }}" alt=""></a>
+            </div>
+            <!-- End Logo -->
+            <!-- Bars -->
+            <div class="bars" id="bars"></div>
+            <!-- End Bars -->
+
+            <!--Navigation-->
+            <nav class="navigation nav-c" id="navigation" data-menu-type="1200">
+                <div class="nav-inner">
+                    <a href="#" class="bars-close" id="bars-close">Close</a>
+                    <div class="tb">
+                        <div class="tb-cell">
+                            <ul class="menu-list text-uppercase">
+                                <li >
+                                    <a href="{{ path('homepage') }}" title="">Home</a>
+
+                                </li>
+
+                                <li>
+                                    <a href="#" title="">Hotel</a>
+                                    <ul class="sub-menu">
+
+                                        <li>
+                                            <a href="{{ path("hotel_list") }}">Hotels</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path("promo_list") }}">Offers</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#" title="">Blog</a>
+                                    <ul class="sub-menu">
+{% if is_granted('ROLE_MODERATOR') %}
+                                        <li>
+                                            <a href={{ path("new") }} title="">Add Post</a>
+                                        </li>
+{% endif %}
+                                        <li>
+                                            <a href={{ path("Blog") }} title="">Blog</a>
+                                        </li>
+
+
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#" title="">Evenement</a>
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ path('eventlist') }}" title="">Evènement</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('tourslist') }}">Tour </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{{ path('cruise_list') }}" title="Cruises">Cruises</a>
+
+                                </li>
+                                <li><a href="{{ path('discutea_forum_homepage') }}">Forum</a></li>
+                                <li>
+
+
+
+
+                                    {% if app.user %}
+                                        <a href="#" title="">Profile/Logout</a>
+
+                                        <ul class="sub-menu">
+                                            <li>
+                                                {% if app.user.type == 'organisateur' and not  is_granted('ROLE_MODERATOR')   %}
+                                                <a href="{{ path("fos_user_profile_show") }}" >Profile</a>
+                                                {% endif %}
+                                                {% if app.user.type == 'hostguest' and not is_granted('ROLE_MODERATOR')  %}
+                                                    <a href="{{ path("profilehostguest") }}" >Profile</a>
+                                                {% endif %}
+                                                {% if app.user.type == 'cruiser' and not is_granted('ROLE_MODERATOR')  %}
+                                                    <a href="{{ path("cruiser_profile") }}" >Profile</a>
+                                                {% endif %}
+                                                {% if app.user.type == 'hotel'  and not is_granted('ROLE_MODERATOR')  %}
+                                                    <a href="{{ path("hotel_profile") }}" >Profile</a>
+                                                {% endif %}
+
+                                                {% if is_granted('ROLE_MODERATOR')  %}
+                                                    <a href="{{ path("discutea_forum_admin_dashboard") }}" >Forum</a>
+                                                {% endif %}
+                                            </li>
+                                            <li>
+                                                <a href="{{ path("fos_user_security_logout") }}" >Logout</a>
+                                            </li>
+                                        </ul>
+
+
+
+                                    {% else %}
+                                        <a href="#" title="">login/register</a>
+
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="{{ path("fos_user_security_login") }}" >login</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path("fos_user_registration_register") }}" >register</a>
+                                            </li>
+                                        </ul>
+
+
+                                    {% endif %}
+
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!--End Navigation-->
+        </div>
+    </header>
+    <!-- End Header -->
+
+    {% block body %}
+        <!-- Wrap -->
+
+    {% endblock body %}
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <!-- Logo -->
+                <div class="col-md-4">
+                    <div class="logo-foter">
+                        <a href="index.html" title=""><img src="{{ asset('bundles/app/images/logo.png') }}" alt="" height="150" width="300"></a>
+                    </div>
+                </div>
+                <!-- End Logo -->
+                <!-- Navigation Footer -->
+                <div class="col-xs-6 col-sm-3 col-md-2">
+                    <div class="ul-ft">
+                        <ul>
+                            <li><a href="about.html" title="">About</a></li>
+                            <li><a href="blog.html" title="">Blog</a></li>
+                            <li><a href="fqa.html" title="">FQA</a></li>
+                            <li><a href="careers.html" title="">Carrers</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- End Navigation Footer -->
+                <!-- Navigation Footer -->
+                <div class="col-xs-6 col-sm-3 col-md-2">
+                    <div class="ul-ft">
+                        <ul>
+                            <li><a href="contact.html" title="">Contact Us</a></li>
+                            <li><a href="#" title="">Privacy Policy</a></li>
+                            <li><a href="#" title="">Term of Service</a></li>
+                            <li><a href="#" title="">Security</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- End Navigation Footer -->
+                <!-- Footer Currency, Language -->
+                <div class="col-sm-6 col-md-4">
+                    <!-- Language -->
+                    <div class="currency-lang-bottom dropdown-cn float-left">
+                        <div class="dropdown-head">
+                            <span class="angle-down"><i class="fa fa-angle-down"></i></span>
+                        </div>
+                        <div class="dropdown-body">
+                            <ul>
+                                <li class="current"><a href="#" title="">English</a></li>
+                                <li><a href="#" title="">Bahasa Melayu</a></li>
+                                <li><a href="#" title="">Català</a></li>
+                                <li><a href="#" title="">Dansk</a></li>
+                                <li><a href="#" title="">Deutsch</a></li>
+                                <li><a href="#" title="">Francais</a></li>
+                                <li><a href="#" title="">Italiano</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- End Language -->
+                    <!-- Currency -->
+                    <div class="currency-lang-bottom dropdown-cn float-left">
+                        <div class="dropdown-head">
+                            <span class="angle-down"><i class="fa fa-angle-down"></i></span>
+                        </div>
+                        <div class="dropdown-body">
+                            <ul>
+                                <li class="current"><a href="#" title="">US</a></li>
+                                <li><a href="#" title="">ARS</a></li>
+                                <li><a href="#" title="">ADU</a></li>
+                                <li><a href="#" title="">CAD</a></li>
+                                <li><a href="#" title="">CHF</a></li>
+                                <li><a href="#" title="">CNY</a></li>
+                                <li><a href="#" title="">CZK</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- End Currency -->
+                    <!--CopyRight-->
+                    <p class="copyright">
+                        © 2016 – 2017 GangstaProd™ All rights reserved.
+                    </p>
+                    <!--CopyRight-->
+                </div>
+                <!-- End Footer Currency, Language -->
+            </div>
+        </div>
+    </footer>
+</div>
+{% block eventmapdetail %}
+
+{% endblock %}
+<!-- Library JS -->
+<script type="text/javascript" src="{{ asset('bundles/app/js/library/jquery-1.11.0.min.js') }}"></script>
+
+<script type="text/javascript" src="{{ asset('bundles/app/js/library/jquery-ui.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/app/js/library/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/app/js/library/owl.carousel.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/app/js/library/parallax.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/app/js/library/jquery.nicescroll.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/app/js/library/jquery.ui.touch-punch.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/app/js/library/jquery.mb.YTPlayer.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/app/js/library/SmoothScroll.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/app/plugin/ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('contdown/compiled/flipclock.js') }}"></script>
+<!-- End Library JS -->
+<!-- Main Js -->
+<script type="text/javascript" src="{{ asset('bundles/app/js/script.js') }}"></script>
+{% block js  %}
+
+{% endblock js %}
+<!-- End Main Js -->
+</body>
+</html>
+

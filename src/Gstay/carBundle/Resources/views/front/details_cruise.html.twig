@@ -1,0 +1,474 @@
+{% extends 'base.html.twig' %}
+{% block title %} add promo {% endblock %}
+{% block body %}
+<link href="{{ asset('jTable/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
+ <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+                <img src="images/logo-banner.png" alt="">
+            </a>
+        </div>
+        <!-- Logo -->
+    </section>
+<div class="main main-dt">
+    <div class="container">
+        <div class="main-cn detail-page bg-white clearfix">
+
+            <!-- Breakcrumb -->
+            <section class="breakcrumb-sc">
+                <ul class="breadcrumb arrow">
+                    <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                    <li><a href="hotel.html" title="">Cruises</a></li>
+                    <li><a href="#" title=""> {{ Croisiere.idNavire.nom }}</a></li>
+
+                </ul>
+                <div class="support float-right">
+                    <small>Got a question?</small> {{ Croisiere.idProfile.phoneNum }}
+                </div>
+            </section>
+            <!-- End Breakcrumb -->
+
+            <!-- Header Detail -->
+            <section class="head-detail">
+                <div class="head-dt-cn">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <h1>{{ Croisiere.nom }}</h1>
+                            <ul>
+                                <li>Ship: {{ Croisiere.idNavire.nom }}</li>
+                                <li> {{ Croisiere.idProfile.nomCompa }}
+                                    {% if (Croisiere.idProfile.stars == 4) %} <!--no star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                    {% elseif (Croisiere.idProfile.stars) == 3 %}<!--one star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                    {% elseif (Croisiere.idProfile.stars) == 2 %}<!--one star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                    {% elseif (Croisiere.idProfile.stars) == 1 %}<!--one star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                    {% elseif (Croisiere.idProfile.stars) == 5 %}<!--one star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+
+
+                                    {% endif %}
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="col-sm-5 text-right">
+                            <p class="price-book">
+                                From-<span>$345</span>/night
+                                <a href="" title="" class="awe-btn awe-btn-1 awe-btn-lager">Book Now</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- End Header Detail -->
+
+            <!-- Detail Slide -->
+            <section class="detail-slider">
+                <!-- Lager Image -->
+                <div class="slide-room-lg">
+                    <div id="slide-room-lg">
+                       {% for pictures in pictures %}
+                           <img style="max-height: 500px;" src="{{ asset('images/products/'~pictures.imageName) }}" alt="">
+                        {% endfor %}
+                        <img style="max-height: 500px;" src="{{ asset('images/products/'~ Croisiere.idProfile.imageName) }}" alt="">
+                         <img style="max-height: 500px;" src="{{ asset('images/products/'~ Croisiere.idNavire.imageName) }}" alt="">
+                    </div>
+                </div>
+                <!-- End Lager Image -->
+                <!-- Thumnail Image -->
+                <div class="slide-room-sm">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div id="slide-room-sm">
+                                {% for pictures in pictures %}
+                                    <img style="max-height: 100px;" src="{{ asset('images/products/'~pictures.imageName) }}" alt="">
+                                {% endfor %}
+                                <img style="max-height: 500px;" src="{{ asset('images/products/'~ Croisiere.idProfile.imageName) }}" alt="">
+                                <img style="max-height: 500px;" src="{{ asset('images/products/'~ Croisiere.idNavire.imageName) }}" alt="">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Thumnail Image -->
+            </section>
+            <!-- End Detail Slide -->
+
+            <!-- Cruise Itinerary -->
+            <section class="cruise-itinerary detail-cn" id="cruise-itinerary">
+                <div class="row">
+
+                    <div class="col-lg-3 detail-sidebar">
+                        <!-- Cruise Itinerary Map -->
+                        <h2 class="title-detail">Cruise itinerary</h2>
+                        <div id="itinerary-maps"><img src="{{ asset('images/carte_genes.png') }}" alt=""></div>
+                        <!-- End Cruise Itinerary Map -->
+                    </div>
+
+                    <!-- Cruise Itinerary Content -->
+                    <div class="col-lg-9 cruise-itinerary-cn">
+                        <div class="responsive-table">
+                            <table class="table table-itinerary">
+                                <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Ports of Call</th>
+                                    <th class="th-arrival">Arrival</th>
+                                    <th class="th-departure">Departure</th>
+                                    <th >Information</th>
+                                </tr>
+                                </thead>
+                                {% for days in days %}
+                                    {% if days.jour != NULL %}
+
+
+                                <tr>
+                                        <td class="td-day"> {{ days.jour }}  </td>
+                                    <td class="td-post">{{ days.portEscale }}</td>
+                                    <td class="td-arrival">{% if days.jour == 1  %}   {% else %} {{ days.a |date("H:i")}} {% endif %}</td>
+                                    <td class="td-departure"> {{ days.de |date("H:i") }}</td>
+                                    <td class="">{{ days.info }}</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+
+                            </table>
+                        </div>
+                    </div>
+                    <!-- End Cruise Itinerary Content -->
+                </div>
+
+            </section>
+
+            <!-- End Cruise Itinerary -->
+            <!-- Date Availability-->
+            <section class="date-availability detail-cn" id="date-availability">
+                <div class="row">
+                    <div class="col-lg-3 detail-sidebar">
+                        <div class="scroll-heading">
+                            <h2>Date Availability</h2>
+                            <hr class="hr">
+                            <a href="#cabin-type" title="">Cabin type</a>
+                            <a href="#cabin-number" title="">Cabin number</a>
+                            <a href="#cruise-overview" title="">Cruise overview</a>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-9 cruise-itinerary-cn">
+
+
+
+                        <table class="table " cellspacing="0" width="100%">
+
+                            <thead>
+                            <tr>
+                                <th>                             <h2 class="title-detail">Cruise Cabins</h2>
+</th>
+                                <th> Cabine Name </th>
+
+                                <th> Cabine Type</th>
+
+                                <th> Price </th>
+                                <th> Details </th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+
+                            <tr>
+                                <th> </th>
+                                <th> Cabine Name </th>
+
+                                <th> Cabine Type</th>
+
+                                <th> Price </th>
+                                <th> Details </th>
+                            </tr>
+                            </tfoot>
+
+                            <tbody>
+                            {% for cabine in cabine %}
+
+                                <tr>
+                                    <td>   <img style="max-height: 100px;" src="{{ asset('images/products/'~cabine.imageName) }}" alt="">
+                                    </td>
+                                    <td> {{ cabine.nom  }}</td>
+
+                                    <td> {{ cabine.type }} </td>
+                                    <td> {{ cabine.prix }} €     </td>
+                                    <td>                                                         <a href="{{ path('show_cabineD',{'id': cabine.id}) }}"><button type="button" class="awe-btn awe-btn-1 awe-btn-medium" >Details</button></a>
+</td>
+
+
+
+                                    </br>
+
+                                </tr>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </section>
+            <!-- End Date Availability -->
+
+
+            <!-- Cabin number-->
+            <section class="cabin-number detail-cn" id="cabin-number">
+                <div class="row">
+                    <div class="col-lg-3 detail-sidebar">
+                        <div class="scroll-heading">
+                            <h2>Cabin number</h2>
+                            <hr class="hr">
+                            <a href="#date-availability" title="">Date availability</a>
+                            <a href="#cabin-type" title="">Cabin type</a>
+                            <a href="#cruise-overview" title="">Cruise overview</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 cabin-number-cn">
+                        <!-- Balcony -->
+                        <div class="row">
+
+
+                        </div>
+                        <!-- End Balcony -->
+
+                        <!-- Stateroom categorys - Available cabins -->
+                        <div class="stateroom-available">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <!-- Stateroom Categories -->
+                                    <div class="stateroom-cat">
+                                        <h2 class="title-detail">Stateroom Categories</h2>
+
+                                        <!-- Accordion -->
+                                        <div class="panel-group" id="accordion">
+
+                                            <!-- Accordion 1 -->
+                                            <div class="panel">
+                                                <div class="panel-heading" id="headingOne">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                            <span class="num _1">cs</span>Deluxe Ocean View with Balcony
+                                                            <span class="icon fa fa-angle-down"></span>
+                                                        </a>
+                                                    </h4>
+
+                                                </div>
+                                                <div  id="collapseOne" class="panel-collapse collapse" aria-labelledby="headingOne">
+                                                    <div class="panel-body">
+                                                        This stateroom features two convertible lower beds, floor-to-ceiling sliding glass doors, private veranda, sitting area (some with sofa bed), refrigerator, 20" multifunction interactive television, direct-dial telephone and voicemail, individual safe, hair dryer, thermostat-controlled air-conditioning, mini-bar, bathroom with bathtub and/or shower, complimentary use of bathrobes, and 24-hour room service.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Accordion 1 -->
+
+                                            <!-- Accordion 2 -->
+                                            <div class="panel">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#headingTwo">
+                                                            <span class="num _3">cs</span>Concierge Class 1
+                                                            <span class="icon fa fa-angle-down"></span>
+                                                        </a>
+                                                    </h4>
+
+                                                </div>
+                                                <div  id="headingTwo" class="panel-collapse collapse in">
+                                                    <div class="panel-body">
+                                                        <img src="images/cruise/img-10.jpg" alt="">
+                                                        <p>
+                                                            This stateroom features two convertible lower beds, floor-to-ceiling sliding glass doors, private veranda, sitting area (some with sofa bed), refrigerator, 20" multifunction interactive television, direct-dial telephone and voicemail, individual safe, hair dryer, thermostat-controlled air-conditioning, mini-bar, bathroom with bathtub and/or shower, complimentary use of bathrobes, and 24-hour room service.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Accordion 2 -->
+
+                                            <!-- Accordion 3 -->
+                                            <div class="panel">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                                            <span class="num _3">cs</span>Celebrity Suite
+                                                            <span class="icon fa fa-angle-down"></span>
+                                                        </a>
+                                                    </h4>
+
+                                                </div>
+                                                <div  id="collapseThree" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        This stateroom features two convertible lower beds, floor-to-ceiling sliding glass doors, private veranda, sitting area (some with sofa bed), refrigerator, 20" multifunction interactive television, direct-dial telephone and voicemail, individual safe, hair dryer, thermostat-controlled air-conditioning, mini-bar, bathroom with bathtub and/or shower, complimentary use of bathrobes, and 24-hour room service.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Accordion 3 -->
+
+                                            <!-- Accordion 4 -->
+                                            <div class="panel">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                            <span class="num _4">2a</span>Family Ocean View with Balcony
+                                                            <span class="icon fa fa-angle-down"></span>
+                                                        </a>
+                                                    </h4>
+
+                                                </div>
+                                                <div class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        This stateroom features two convertible lower beds, floor-to-ceiling sliding glass doors, private veranda, sitting area (some with sofa bed), refrigerator, 20" multifunction interactive television, direct-dial telephone and voicemail, individual safe, hair dryer, thermostat-controlled air-conditioning, mini-bar, bathroom with bathtub and/or shower, complimentary use of bathrobes, and 24-hour room service.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Accordion 4 -->
+
+                                            <!-- Accordion 5 -->
+                                            <div class="panel">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                                            <span class="num _5">2a</span>Family Ocean View with Balcony
+                                                            <span class="icon fa fa-angle-down"></span>
+                                                        </a>
+                                                    </h4>
+
+                                                </div>
+                                                <div  id="collapseFive" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        This stateroom features two convertible lower beds, floor-to-ceiling sliding glass doors, private veranda, sitting area (some with sofa bed), refrigerator, 20" multifunction interactive television, direct-dial telephone and voicemail, individual safe, hair dryer, thermostat-controlled air-conditioning, mini-bar, bathroom with bathtub and/or shower, complimentary use of bathrobes, and 24-hour room service.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Accordion 5 -->
+
+                                        </div>
+                                        <!-- Accordion -->
+                                    </div>
+                                    <!-- End Stateroom Categories -->
+
+                                    <!-- Available cabins -->
+
+                                    <!-- End Available cabins -->
+                                </div>
+                                <div class="col-md-4 col-md-offset-1 stateroom-img">
+                                    <img src="{{ asset('bundles/app/images/background/bg-9.png') }}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Stateroom categorys - Available cabins -->
+
+                    </div>
+                </div>
+            </section>
+            <!-- End Cabin number -->
+
+            <!-- Cruise Overview-->
+            <section class="cruise-overview detail-cn" id="cruise-overview">
+                <div class="row">
+                    <div class="col-lg-3 detail-sidebar">
+                        <div class="scroll-heading">
+                            <h2>Cruise overview</h2>
+                            <hr class="hr">
+                            <a href="#date-availability" title="">Date availability</a>
+                            <a href="#cabin-type" title="">Cabin type</a>
+                            <a href="#cabin-number" title="">Cabin number</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 cruise-overview-cn">
+
+                        <!-- Cruise Overview Content -->
+                        <div class="cruise-overview-item">
+                            <h2 class="title-detail">Cruise Description</h2>
+                            <div class="text">
+                                <ul class="ship-highlight-list">
+                                    <li> Name : {{ Croisiere.nom }}</li>
+                                    <li> Number : {{ Croisiere.numCroissiere }}</li>
+                                    <li> Destination : {{ Croisiere.destination }}</li>
+                                    <li> Date of departure : {{ Croisiere.dateDep | date('D:M:Y')}}</li>
+                                    <li> Date of arrival : {{ Croisiere.dateArr| date('D:M:Y') }}</li>
+                                    <li> Services included : {{ Croisiere.serviceInclu  |raw }}</li>
+                                    <li> Family offer : {{ Croisiere.offreSpecial  |raw }}</li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Cruise Overview Content -->
+                        <!-- Cruise Overview Content -->
+                        <div class="cruise-overview-item">
+                            <h2 class="title-detail">Ship Highlights</h2>
+                            <div class="text">
+                                <ul class="ship-highlight-list">
+                                    <li> Cabins : {{ Croisiere.idNavire.cabines|raw }}</li>
+                                    <li> Included services : {{ Croisiere.idNavire.service|raw }}</li>
+                                    <li> Entertainment :{{ Croisiere.idNavire.divertis|raw }}</li>
+                                    <li> Wellness and fitness :{{ Croisiere.idNavire.fitness|raw }}</li>
+                                    <li>Shopping: {{ Croisiere.idNavire.shopping|raw }}</li>
+                                    <li> Benefits for families :{{ Croisiere.idNavire.famille|raw }}</li>
+                                    <li> Clothing :{{ Croisiere.idNavire.tenue|raw }}</li>
+                                    <h2 class="title-detail">Ship Details</h2>
+                                    <li> Name : {{ Croisiere.idNavire.nom }}</li>
+                                    <li> Commissioning of the boat : {{ Croisiere.idNavire.MiseService| date('Y') }}</li>
+                                    <li> Renovated in : {{ Croisiere.idNavire.renove| date('Y') }}</li>
+                                    <li> Languages spoken on board : {{ Croisiere.idNavire.langue|raw }}</li>
+                                    <li> Internet on board : {{ Croisiere.idNavire.internet|raw }}</li>
+                                    <li> Currencies accepted on board : {{ Croisiere.idNavire.monnaies|raw }}</li>
+                                    <li> Accommodation capacity : {{ Croisiere.idNavire.capacite }}</li>
+                                    <li> Crew members : {{ Croisiere.idNavire.equipage}}</li>
+                                    <li> Number of bridges : {{ Croisiere.idNavire.nbrPont }}</li>
+                                    <li> Tonnage : {{ Croisiere.idNavire.tonnage }} in gross tons</li>
+                                    <li> ship draught : {{ Croisiere.idNavire.tirant }} in meters</li>
+                                    <li> Length : {{ Croisiere.idNavire.longueur }} in meters</li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Cruise Overview Content -->
+                    </div>
+                </div>
+            </section>
+            <!-- End Cruise Overview -->
+
+            <section class="detail-footer cruise-detail-footer detail-cn">
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-9 detail-footer-cn text-right">
+                        <p class="price-book">
+                            From-<span>$345</span>/night
+                            <a href="" title="" class="awe-btn awe-btn-1 awe-btn-lager">Book Now</a>
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    {% endblock %}
+  {% block js %}
+            <script type="text/javascript" src="{{ asset('jTable/jquery-2.1.4.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('jTable/jquery.dataTables.min.js') }}"></script>
+            <script type="text/javascript">$(document).ready(function() {
+                    $('#example').DataTable();
+                } );
+            </script>
+        {% endblock js %}

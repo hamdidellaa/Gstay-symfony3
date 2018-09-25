@@ -1,0 +1,245 @@
+{% extends 'base.html.twig' %}
+{% block title %} ADD RESERVATION {% endblock %}
+{% block body %}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="{{ asset('notif/lobibox.min.css') }}"/>
+
+<!-- Wrap -->
+<div id="wrap">
+
+    <!--Banner-->
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+
+                <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+            </a>
+        </div>
+        <!-- Logo -->
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main">
+        <div class="container">
+            <div class="main-cn element-page bg-white clearfix">
+                <!--Breakcrumb-->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href=""><i class="fa fa-home"></i></a></li>
+                        <li>Edit House</li>
+                    </ul>
+                </section>
+                <!--End Breakcrumb-->
+
+                <section class="user-profile">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="user-profile__header">
+                                <h4>{{ profile.firstName }}_{{ profile.lastName}}</h4>
+                                <span>Member Sincen {{ profile.dateInscrit | date('M') }} {{ profile.dateInscrit | date('Y') }}</span>
+                                <p>
+
+                                    <img src="{{ asset('bundles/app/images/user/img-1.jpg') }}" alt="">
+                                </p>
+                            </div>
+
+                            <ul class="user-profile__navigation">
+                                <li><a href="{{path('listlogement') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">List Logements</a></li>
+                                <li><a href="{{path('meslogements') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">My Bookings</a></li>
+                                <li ><a href="{{path('meslogements') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">Mes Logements</a></li>
+
+                                <li class="current" ><a href="{{path('profilehostguest') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">My profile</a></li>
+
+                                <li><a href="{{path('review') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">My reviews</a></li>
+                                <li><a href="{{path('setting') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">Settings</a></li>
+                                <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Wishlist</a></li>
+                                <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-9">
+
+                            <div class="user-form">
+                                <div class="row">
+                                    <h3> Here You Can Reservate </h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h3> Welcome</h3>
+
+
+
+
+                                                    <section class="events text-left newsection">
+                                                        <div class="container">
+                                                            <div class="user-form">
+                                                                <div class="row">
+                                                                    <h3> ADD A RESERVATION</h3>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+
+                                                                        {{ form_start(form, {'attr': {'onsubmit':'return validateForm()' } }  ) }}
+                                                                        <div class="field-input">
+
+                                                                            <label> Start date </label>
+                                                                            {{ form_widget(form.datedebut)   }}
+                                                                        </div>
+
+                                                                        <div class="field-input">
+
+                                                                            <label> End date </label>
+                                                                            {{ form_widget(form.datefin) }}
+                                                                        </div>
+                                                                        <div class="field-input">
+
+                                                                            <label> rooms number </label>
+                                                                            {{ form_widget(form.nbrchambrereserver, {'attr': {'class': 'form-control'  }}) }}
+                                                                        </div>
+                                                                        <div class="field-input">
+
+
+                                                                            {{ form_widget(form.prixreservation, {'attr': {'class': 'hidden' }}) }}
+                                                                        </div>
+
+                                                                        <div class="field-input">
+
+                                                                            <label>  number of romms avalable </label>
+                                                                            <input type="text" id="gstay_guesthostbundle_logement_nbrchambredispo"  value="{{ logement.nbrchambredispo }}" disabled >
+                                                                        </div>
+
+
+                                                                        <div class="field-input">
+                                                                            {{ form_widget(form.Save, {'attr': {'class': 'awe-btn awe-btn-1 awe-btn-medium' }}) }}
+
+
+                                                                        </div>
+                                                                        {{ form_end(form) }}
+
+                                                                    </div>
+
+
+
+                                                                </div>
+
+
+
+                                                            </div>
+                                                        </div>
+
+
+                                                    </section>
+
+
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+                                    </div>
+
+
+
+
+
+                                </div>
+
+                        </div>
+            </section>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+
+
+
+
+    <script src="{{ asset('notif/lobibox.js') }}"></script>
+    <script src="{{ asset('notif/messageboxes.js') }}"></script>
+    <script>
+        function validateForm() {
+
+
+            var nbrchambredispo=document.getElementById('gstay_guesthostbundle_logement_nbrchambredispo').value;
+            var nbrechambreareserver=document.getElementById('gstay_guesthostbundle_reservationlogement_nbrchambrereserver').value;
+            var year1 = document.getElementById('gstay_guesthostbundle_reservationlogement_datedebut_year').value;
+            var month1 = document.getElementById('gstay_guesthostbundle_reservationlogement_datedebut_month').value;
+            var day1 = document.getElementById('gstay_guesthostbundle_reservationlogement_datedebut_day').value;
+            var year2 = document.getElementById('gstay_guesthostbundle_reservationlogement_datefin_year').value;
+            var month2 = document.getElementById('gstay_guesthostbundle_reservationlogement_datefin_month').value;
+            var day2 = document.getElementById('gstay_guesthostbundle_reservationlogement_datefin_day').value;
+
+            var s1=new Date(year1,month1,day1);
+            var s2 =new Date(year2,month2,day2);
+            var d3=new Date();
+
+
+
+
+
+
+            if(nbrechambreareserver =="")
+            {
+                Lobibox.notify('error', {
+                    title: 'rooms error ',
+                    msg: 'please complete the form.'
+                });
+                return false;
+            }
+
+
+
+            if(nbrechambreareserver > nbrchambredispo)
+            {
+                Lobibox.notify('error', {
+                    title: 'rooms error ',
+                    msg: 'number of rooms you want tou reserve is more than rooms available  .aaa.'
+                });
+                return false;
+            }
+
+            if( nbrchambredispo == 0)
+            {
+                Lobibox.notify('error', {
+                    title: 'rooms error ',
+                    msg: 'there is no room availble rooms available  .aaa.'
+                });
+                return false;
+            }
+
+            if(s1 > s2)
+            {
+                Lobibox.notify('error', {
+                    title: 'Date error ',
+                    msg: 'please check your date . Date start > Date End  .'
+                });
+                return false;
+            }
+            if(s1 < d3)
+            {
+                Lobibox.notify('error', {
+                    title: 'Date error ',
+                    msg: 'please check your Start date . it can t be < Date now   .'
+                });
+                return false;
+            }
+
+
+
+        }
+    </script>
+
+
+
+    {% endblock %}

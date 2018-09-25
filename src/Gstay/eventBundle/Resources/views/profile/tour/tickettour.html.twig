@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+{% block title %} Ticket tour : {{ tour.title }} {% endblock %}
+{% block body %}
+
+    <link href="{{ asset('jTable/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <!-- Wrap -->
+    <div id="wrap">
+
+
+    <!--Banner-->
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+
+                <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+            </a>
+        </div>
+        <!-- Logo -->
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main">
+        <div class="container">
+            <div class="main-cn element-page bg-white clearfix">
+                <!--Breakcrumb-->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href="{{ path('listtourprofile') }}"><i class="fa fa-home"></i></a></li>
+                        <li>list Tour</li>
+                    </ul>
+                </section>
+                <!--End Breakcrumb-->
+
+                <section class="user-profile">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="user-profile__header">
+                                <h4>{{ profile.nom }}_{{ profile.prenom }}</h4>
+                                <span>Member Sincen {{ profile.dateInscrit | date('M') }} {{ profile.dateInscrit | date('Y') }}</span>
+                                <p>
+                                <p>
+
+                                    <img src="{{ asset('images/products/'~ profile.imageName) }}" alt="">
+                                </p>
+                            </div>
+
+                            <ul class="user-profile__navigation">
+
+                                <li ><a href="{{ path('listeventprofile') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">My Events</a></li>
+                                <li class="current"><a href="{{ path('listtourprofile') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">My Tours</a></li>
+                                <li> <a href="{{ path('profileEvent') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">My profile</a></li>
+                                <li><a href="{{ path('message_profile') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">My reviews</a></li>
+                                <li><a href="{{path('profileEventSetting') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">Settings</a></li>
+                                <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Wishlist</a></li>
+                                <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+                            </ul>
+
+                        </div >
+                        <div class="col-md-9">
+
+                            <div class="user-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3></h3>
+                                        {% if    app.request.get('msg')  and  msg != "" %}
+                                        <div class="alert alert-success">
+                                            <strong>Well done!</strong>
+
+                                            {{ app.request.get('msg') }}
+                                        </div>
+                                         {% endif %}
+                                         <div class="col-lg-12" >
+                                          <div class="col-lg-8" >
+                                          <label> Tour : {{ tour.title }}</label> <br>
+                                          <label> Rest ticket : {{ tour.maxplace }}</label><br>
+                                          <label> Ticket sold : {{ tour.ticketvendu }}</label><br>
+                                          <label> Income : {{ tour.ticketvendu * tour.prix }}  DT</label><br><br><br>
+
+
+                                          </div>
+
+
+                                           </div>
+                                                
+                                        <div >
+
+                                        <table id="example" class="table table-hover nomargin" cellspacing="0" width="100%">
+                                            <thead>
+                                         <tr>
+                                             <th>Client  Email </th>
+
+                                             <th> Date </th>
+                                             <th> nb ticket</th>
+                                             <th> ref ticket</th>
+
+
+
+
+                                         </tr>
+                                         </thead>
+
+
+                                            <tbody>
+                                        {% for ticket in ticket %}
+
+                                            <tr>
+                                              <td> {{ ticket.iduser.email }}</td>
+
+                                                <td> {{ ticket.date|date('y/m/d  h:i:s') }}</td>
+                                                 <td> {{ ticket.nbticket }}</td>
+                                                 <td> {{ ticket.refticket }}</td>
+
+
+
+                                            </tr>
+
+                                        {% endfor %}
+                                            </tbody>
+                        </table>
+                        </div>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+
+
+{% endblock %}
+
+        {% block js %}
+
+        <script  src="http://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script  src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+<script  src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js4.js"></script>
+<script  src="http://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="http://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script  src="http://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script  src="http://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+<script  src="http://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+            'pageLength','copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+
+    } );
+} );
+    </script>
+        {% endblock js %}

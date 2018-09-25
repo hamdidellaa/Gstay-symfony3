@@ -1,0 +1,319 @@
+{% extends 'base.html.twig' %}
+{% block title %} add promo {% endblock %}
+{% block body %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="main main-dt">
+
+    <div class="container">
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Get a ticket for {{ cabine.nom }} </h4>
+                </div>
+                <div class="modal-body">
+                    {% if app.user %}
+                        <p>welcome !!</p>
+                        <form class="controleticket">
+
+
+
+
+
+                            <input value="{{ app.user.id }} " type="text" name="iduser" hidden>
+                            <input  value="{{ cabine.id }} " type="text" name="idtour" hidden>
+                            <input  value="{{ app.user.type }} " type="text" name="type" hidden>
+
+                            <label >Email:</label>
+                            <input class="form-control" value="{{ app.user.email }} " type="text" name="email" disabled>
+
+
+                            <label >Nb tickets:</label>
+                            <input class="form-control"  type="number" min="1" max="99" id="ticketnumber" name="nbticket" value="1" onchange="checknbticket({{ cabine.prix }},'{{ cabine.id }}')">
+                            <p id="prixtotal" > Total price:  </p> <span  id="error" style="background-color: red"></span>
+                            <p  > Reservation Key  </p> <span  id="keygen" ></span>
+                            </li>
+                            </ul>
+
+                        </form>
+                    {% else %}
+                        <p>You are not connected !!</p>
+                        <div class="row">
+                            <div class=" col-md-6">
+                                <a href="{{ path('fos_user_security_login', { 'url': app.request.uri }) }}"> <button class="awe-btn-medium">Login</button></a>
+                            </div>
+
+                            <div class=" col-md-6">
+                                <button class="awe-btn-medium">Sing up</button>
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    {% if app.user %}
+                        <button  class="btn btn-success" id="getbtn" >Get </button>
+                    {% endif %}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="main-cn detail-page bg-white clearfix">
+
+    <!-- Breakcrumb -->
+    <section class="breakcrumb-sc">
+        <ul class="breadcrumb arrow">
+            <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+            <li><a href="hotel.html" title="">Cruises</a></li>
+            <li><a href="#" title=""> {{ cabine.idCroisiere.idNavire.nom }}</a></li>
+
+        </ul>
+        <div class="support float-right">
+            <small>Got a question?</small> {{ cabine.idCroisiere.idProfile.phoneNum }}
+        </div>
+    </section>
+    <!-- End Breakcrumb -->
+
+    <!-- Header Detail -->
+    <section class="head-detail">
+        <div class="head-dt-cn">
+            <div class="row">
+                <div class="col-sm-7">
+                    <h1>{{ cabine.idCroisiere.nom }}</h1>
+                    <ul>
+                        <li>Ship: {{ cabine.idCroisiere.idNavire.nom }}</li>
+                        <li> {{ cabine.idCroisiere.idProfile.nomCompa }}
+                            {% if (cabine.idCroisiere.idProfile.stars == 4) %} <!--no star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                            {% elseif (cabine.idCroisiere.idProfile.stars) == 3 %}<!--one star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                            {% elseif (cabine.idCroisiere.idProfile.stars) == 2 %}<!--one star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                            {% elseif (cabine.idCroisiere.idProfile.stars) == 1 %}<!--one star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                            {% elseif (cabine.idCroisiere.idProfile.stars) == 5 %}<!--one star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+
+
+                            {% endif %}
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="col-sm-5 text-right">
+                    <p class="price-book">
+                        <span>{{ cabine.prix }} €</span>
+                        <a href="" title="" class="awe-btn awe-btn-1 awe-btn-lager" data-toggle="modal" data-target="#myModal">Book now</a>
+                        <a href="{{ path('show_cruisePDF',{'id':cabine.id}) }}"class="awe-btn awe-btn-1 awe-btn-lager">Download PDF</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="payment-room">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="payment-info">
+                    <h2>{{ cabine.nom }} : {{ cabine.type }} </h2>
+                    <span class="star-room">
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                    </span>
+                    <ul>
+                        <li>
+                            <span>Cabine Type:</span>
+                            {{ cabine.type }}
+                        </li>
+                        <li>
+                            <span>Area:</span>
+                            {{ cabine.superficie }}
+                            m²
+                        </li>
+                        <li>
+                            <span>Maximum number of people:</span>&nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+
+                            {{ cabine.maxper }}
+                        </li>
+                        <li>
+                            <span>Number of beds:</span>&nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+
+                            {{ cabine.nbrLit }}
+                        </li>
+                        <li>
+                            <span>Quantity:</span>
+                            {{ cabine.quantite }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="payment-price">
+
+                    <figure>
+                        <img style="max-height: 100px;" src="{{ asset('images/products/'~cabine.imageName) }}" alt="">
+                    </figure>
+                    <div class="total-trip">
+
+                        Bathroom with shower:{{ cabine.salleBain }}<br>
+                        Television: {{ cabine.tele }}<br>
+                        Minibar:{{ cabine.miniBar }}<br>
+                        Safety Deposit Box:{{ cabine.coffreFort }}<br>
+                        Air conditioner:{{ cabine.clim }}<br>
+                        spacious dressing:{{ cabine.dressing }}<br>
+
+                        <p>
+                            Trip Total: <ins>600€</ins>
+
+                            <i>Cruise tax 7% not included, Service charge 10% not included
+                            </i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="{{ asset('lobibox-master/lib/jquery.1.11.min.js') }}"> </script>
+
+
+
+    <script>
+        $(function() {
+//twitter bootstrap script
+            $("#getbtn").click(function(){
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ asset('ajax/modaltour1/getticket.php') }}",
+                    data: $('form.controleticket').serialize(),
+                    success: function(msg){
+                    alert(msg);
+                        document.getElementById('keygen').innerHTML=msg;
+                        Lobibox.notify('success', {
+                            size: 'large',
+                            msg: '  please check your email to get your ticket . thank you for choosing us  '
+                        });
+                        $('#myModal').close();
+
+                        document.getElementById('ticketnumber').value=1;
+                        document.getElementById('prixtotal').innerHTML ="";
+
+                    },
+                    error: function(){
+                        alert("failure");
+                    }
+                });
+            });
+        });
+    </script>
+    <script >
+
+
+
+        function checknbticket(x,idtour) {
+
+            var nb = document.getElementById('ticketnumber').value;
+            var prixtotal = nb * x ;
+            document.getElementById('prixtotal').innerHTML = "Total price: "+prixtotal+" DT "  ;
+
+            var khaled = new XMLHttpRequest();
+            khaled.open("get","{{ asset('ajax/zcheck.php?nb') }}="+nb+"&idtour="+idtour,true);
+            khaled.send() // avec le GET  les parametre sont vides ;
+            khaled.onreadystatechange = function result()
+            {
+                document.getElementById("error").innerHTML= khaled.responseText;
+
+
+
+            }
+            var error = document.getElementById('error').innerHTML;
+            if(error.length > 0 )
+            {
+                document.getElementById('getbtn').setAttribute('disabled','disabled');
+
+            }else {
+                document.getElementById('getbtn').removeAttribute("disabled");
+            }
+
+
+
+        }
+
+
+
+
+
+
+    </script>
+{% endblock %}

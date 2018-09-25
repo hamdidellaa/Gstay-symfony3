@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+{% block title %} My Messages  {% endblock %}
+{% block body %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('notif/lobibox.min.css') }}"/>
+<!-- Wrap -->
+
+
+    <!--Banner-->
+    <div id="wrap">
+
+
+        <!--Banner-->
+        <section class="sub-banner">
+            <!--Background-->
+            <div class="bg-parallax bg-1"></div>
+            <!--End Background-->
+            <!-- Logo -->
+            <div class="logo-banner text-center">
+                <a href="" title="">
+
+                    <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+                </a>
+            </div>
+            <!-- Logo -->
+        </section>
+        <!--End Banner-->
+
+        <!-- Main -->
+        <div class="main">
+            <div class="container">
+                <div class="main-cn element-page bg-white clearfix">
+                    <!--Breakcrumb-->
+                    <section class="breakcrumb-sc">
+                        <ul class="breadcrumb arrow">
+                            <li><a href="{{ path('profileEvent') }}"><i class="fa fa-home"></i></a></li>
+                            <li>Messages  </li>
+                        </ul>
+                    </section>
+                    <!--End Breakcrumb-->
+
+                    <section class="user-profile">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="user-profile__header">
+                                    <h4></h4>
+                                    <span>Member Sincen {{ profile.dateInscrit | date('M') }} {{ profile.dateInscrit | date('Y') }}</span>
+                                    <p>
+                                    <p>
+
+                                        <img src="{{ asset('images/products/'~ profile.imageName) }}" alt="">
+                                    </p>
+                                </div>
+
+                                <ul class="user-profile__navigation">
+
+                                    <li ><a href="{{ path('listeventprofile') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">My Events </a></li>
+                                    <li ><a href="{{ path('listtourprofile') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">My Tours </a></li>
+                                    <li > <a href="{{ path('profileEvent') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">My profile</a></li>
+                                    <li class="current"><a href="{{ path('message_profile') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">My reviews</a></li>
+                                    <li><a href="{{path('profileEventSetting') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">Settings</a></li>
+                                    <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Wishlist</a></li>
+                                    <li><a href="#"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+                                </ul>
+                        </div>
+                        <div class="col-md-10">
+
+
+                            <div class="my-profile">
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <h4 class="my-profile__title">My Messages</h4>
+                                        <a href="{{ path('message_readAll') }}"> <h6 >Read all</h6> </a>
+                    {% for msg in msg %}
+                                        <br>
+                                        <div class="alert-box {% if msg.lu =="nonlu" %} alert-success {% endif %}">
+
+                                             <h6> from : {{ msg.iduser.username }} </h6>
+                                            <span>  Date :{{ msg.date | date('Y/m/d h:i:s') }}</span>
+                                              {{ msg.message }} {% if msg.lu =="nonlu" %} <a href="{{ path('message_delete',{'id':msg.id}) }}"> <i class="fa fa-check fa-2" aria-hidden="true"></i> </a>{% endif %}
+                                        </div>
+
+
+
+
+
+                                        {% endfor %}
+                                    </div>
+
+
+                                </div>
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                            {{ knp_pagination_render(msg) }}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+
+
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="{{ asset('notif/lobibox.js') }}"></script>
+
+
+{% endblock %}

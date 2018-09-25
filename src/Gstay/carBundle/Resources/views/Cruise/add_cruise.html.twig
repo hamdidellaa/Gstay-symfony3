@@ -1,0 +1,523 @@
+{% extends 'base.html.twig' %}
+{% block title %} add cruiser {% endblock %}
+{% block body %}
+
+
+ <link rel="stylesheet" href="{{ asset('lobibox-master/dist/css/lobibox.min.css') }}"/>
+
+
+
+<!-- Wrap -->
+<div id="wrap">
+
+
+ <!--Banner-->
+ <section class="sub-banner">
+  <!--Background-->
+  <div class="bg-parallax bg-1"></div>
+  <!--End Background-->
+  <!-- Logo -->
+  <div class="logo-banner text-center">
+   <a href="" title="">
+
+    <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+   </a>
+  </div>
+  <!-- Logo -->
+ </section>
+ <!--End Banner-->
+
+ <!-- Main -->
+ <div class="main">
+  <div class="container">
+   <div class="main-cn element-page bg-white clearfix">
+    <!--Breakcrumb-->
+    <section class="breakcrumb-sc">
+     <ul class="breadcrumb arrow">
+      <li><a href="{{ path('listeventprofile') }}"><i class="fa fa-home"></i></a></li>
+      <li>Add Event</li>
+     </ul>
+    </section>
+    <!--End Breakcrumb-->
+
+    <section class="user-profile">
+     <div class="row">
+      <div class="col-md-2">
+       <div class="user-profile__header">
+        <h4>{{ ProfileCroisiere.nomCompa}}_{{ ProfileCroisiere.nomCompa }}</h4>
+        <span>Member Sincen {{ ProfileCroisiere.dateInscrit | date('M') }} {{ ProfileCroisiere.dateInscrit | date('Y') }}</span>
+        <p>
+
+         <img src="{{ asset('images/products/'~ProfileCroisiere.imageName) }}" alt="">
+        </p>
+       </div>
+
+       <ul class="user-profile__navigation">
+        <li><a href=""><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">Bookings</a></li>
+        <li ><a href="{{ path('cruiser_profile') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">My profile</a></li>
+        <li ><a href="{{ path('show_ship') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">My Ships</a></li>
+        <li class="current"><a href="{{ path('show_cruise') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">My Cruises</a></li>
+        <li ><a href="{{ path('cruise_pictures') }}"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Pictures</a></li>
+        <li><a href="{{ path('fos_user_security_logout') }}"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+       </ul>
+      </div>
+      <div class="col-md-10">
+
+       <div class="user-form">
+        <div class="row">
+         <h3> Information of the Cruise</h3>
+        </div>
+        <div class="row">
+         <h3> Global Information</h3>
+         <div id="step1" class="col-md-12">
+         <div class="col-md-12">
+
+
+          {{ form_start(form) }}
+          <div class="col-md-6">
+          <div class="field-input">
+           <label> Ship </label>
+
+           {{ form_widget(form.id_navire, {'attr': {'class': 'form-control', }}) }}
+          </div>
+          <div class="field-input">
+           <label>Cruise Name</label>
+           {{ form_widget(form.nom, {'attr': {'class': 'form-control','placeholder':'Cruise Name ' }}) }}
+
+          </div>
+
+          <div class="field-input">
+           <label>Cruise Number</label>
+           {{ form_widget(form.num_croissiere, {'attr': {'class': 'form-control','placeholder':'Cruise Number ' }}) }}
+
+          </div>
+          <div class="field-input">
+           <label>Cabines Concerned</label>
+           {{ form_widget(form.nb_cabine, {'attr': {'class': 'form-control','placeholder':'Cabines Concerned ' }}) }}
+
+          </div>
+
+          </div>
+          <div class="col-md-6">
+           <div class="field-input">
+            <label>Destinantion</label>
+            {{ form_widget(form.destination, {'id':'autocomplete',  'attr'  : {'class': 'form-control','placeholder':'Destinantion ', 'type': 'text' }}) }}
+
+           </div>
+          <div class="field-input">
+           <label>Date of departure</label>
+           {{ form_widget(form.date_dep, { 'id':'dated', 'attr': {'class': 'form-control','placeholder':'Date of departure ' }}) }}
+
+          </div>
+
+
+          <div class="field-input">
+           <label>Date of arrival</label>
+           {{ form_widget(form.date_arr, {'id' : 'datea', 'attr'  : {'class': 'form-control','placeholder':'Date of arrival ' }}) }}
+
+          </div>
+          <div class="field-input">
+           <label>Cruise Brochure (PDF)</label>
+           {{ form_widget(form.imageFile) }}
+          </div>
+          </div>
+         </div>
+          <div class="field-input">
+           <a href="#" id="add" class="awe-btn awe-btn-1 awe-btn-medium" onclick="validateForm()" >NEXT</a>
+          </div>
+        </div>
+         <div id="step2" class="row">
+          <div class="col-md-6">
+          <div class="field-input">
+           <label> Services included</label>
+           {{ form_widget(form.service_inclu, {'attr': {'class': 'ckeditor' }}) }}
+
+          </div>
+          </div>
+
+          <div class="col-md-6">
+          <div class="field-input">
+           <label> Family offer</label>
+           {{ form_widget(form.offre_special, {'attr': {'class': 'ckeditor' }}) }}
+
+          </div>
+          </div>
+
+
+          <div class="row">
+           <h3> Cruise itinerary</h3>
+          </div>
+
+
+          <table id="example" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+
+
+           <thead>
+           <tr>
+            <th> Day</th>
+            <th>Ports of Call</th>
+
+            <th> Arrival</th>
+            <th> Departure </th>
+            <th> INFORMATIONS
+            </th>
+           </tr>
+           </thead>
+           <tbody>
+           {% for day in form.days %}
+
+            <tr id="">
+             <td> {{ form_widget(day.jour, { 'attr': {'class': 'form-control', 'readonly':'readonly'  }}) }}</td>
+             <td> {{ form_widget(day.port_escale, {'attr': {'class': 'form-control' }}) }}</td>
+
+             <td> {{ form_widget(day.a, {'attr': {'class': 'form-control' }}) }} </td>
+             <td> {{ form_widget(day.de, {'attr': {'class': 'form-control' }}) }} </td>
+             <td> {{ form_widget(day.info, {'attr': {'class': 'form-control' }}) }} </td>
+
+
+            </tr>
+
+           {% endfor %}
+
+           </tbody>
+          </table>
+          <div class="field-input">
+           {{ form_widget(form.Valider, {'attr': {'class': 'awe-btn awe-btn-1 awe-btn-medium' }}) }}
+
+          </div>
+         </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+         {{ form_end(form) }}
+
+
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div>
+  </div>
+ </div>
+ <!-- End Main -->
+
+
+
+
+
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQkO9t0ugd5cHC12zbNh6uNGCVlozspIg&signed_in=true&libraries=places&callback=initAutocomplete"
+         async defer></script>
+
+ <script src="{{ asset('lobibox-master/lib/jquery.1.11.min.js') }}"> </script>
+ <script src="{{ asset('lobibox-master/dist/js/lobibox.min.js') }}"> </script>
+
+
+
+
+
+
+
+
+ <script>
+  // This example displays an address form, using the autocomplete feature
+  // of the Google Places API to help users fill in the information.
+
+  var placeSearch, autocomplete;
+  var componentForm = {
+
+   locality: 'long_name',
+   administrative_area_level_1: 'short_name',
+
+   postal_code: 'short_name'
+  };
+
+  function initAutocomplete() {
+   // Create the autocomplete object, restricting the search to geographical
+   // location types.
+   autocomplete = new google.maps.places.Autocomplete(
+           /** @type {!HTMLInputElement} */(document.getElementById('autocompletee')),
+           {types: ['geocode']});
+
+   // When the user selects an address from the dropdown, populate the address
+   // fields in the form.
+   autocomplete.addListener('place_changed', fillInAddress);
+  }
+
+  // [START region_fillform]
+  function fillInAddress() {
+   // Get the place details from the autocomplete object.
+   var place = autocomplete.getPlace();
+
+   for (var component in componentForm) {
+    document.getElementById(component).value = '';
+    document.getElementById(component).disabled = false;
+   }
+
+   // Get each component of the address from the place details
+   // and fill the corresponding field on the form.
+   for (var i = 0; i < place.address_components.length; i++) {
+    var addressType = place.address_components[i].types[0];
+    if (componentForm[addressType]) {
+     var val = place.address_components[i][componentForm[addressType]];
+     document.getElementById(addressType).value = val;
+    }
+   }
+  }
+
+
+ </script>
+
+
+ <script>
+  // This example displays an address form, using the autocomplete feature
+  // of the Google Places API to help users fill in the information.
+
+  var placeSearch, autocomplete;
+  var componentForm = {
+
+   locality: 'long_name',
+   administrative_area_level_1: 'short_name',
+
+   postal_code: 'short_name'
+  };
+
+  function initAutocomplete() {
+   // Create the autocomplete object, restricting the search to geographical
+   // location types.
+   autocomplete = new google.maps.places.Autocomplete(
+           /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+           {types: ['geocode']});
+
+   // When the user selects an address from the dropdown, populate the address
+   // fields in the form.
+   autocomplete.addListener('place_changed', fillInAddress);
+  }
+
+  // [START region_fillform]
+  function fillInAddress() {
+   // Get the place details from the autocomplete object.
+   var place = autocomplete.getPlace();
+
+   for (var component in componentForm) {
+    document.getElementById(component).value = '';
+    document.getElementById(component).disabled = false;
+   }
+
+   // Get each component of the address from the place details
+   // and fill the corresponding field on the form.
+   for (var i = 0; i < place.address_components.length; i++) {
+    var addressType = place.address_components[i].types[0];
+    if (componentForm[addressType]) {
+     var val = place.address_components[i][componentForm[addressType]];
+     document.getElementById(addressType).value = val;
+    }
+   }
+  }
+
+
+ </script>
+
+
+
+
+
+
+
+ <script>
+
+  function validateForm() {
+   //alert(1);
+   var year1 = document.getElementById('gstay_carbundle_croisiere_date_dep_year').value;
+   var month1 = document.getElementById('gstay_carbundle_croisiere_date_dep_month').value-1;
+   var day1 = document.getElementById('gstay_carbundle_croisiere_date_dep_day').value;
+   var year2 = document.getElementById('gstay_carbundle_croisiere_date_arr_year').value;
+   var month2 = document.getElementById('gstay_carbundle_croisiere_date_arr_month').value-1;
+   var day2 = document.getElementById('gstay_carbundle_croisiere_date_arr_day').value;
+
+
+   var d1 = new Date(year1,month1,day1);
+   var d2 = new Date(year2,month2,day2);
+   var d3 = new Date();
+   var diff = {} ;
+   var tmp = d2 - d1;
+   tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+   diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+
+   tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+   diff.min = tmp % 60;                    // Extraction du nombre de minutes
+
+   tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+   diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+
+   tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+   diff.day = tmp+1;
+
+   //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   if(d1 > d2 && d1 < d3)
+   {
+    Lobibox.notify('error', {
+     title: 'Date error ',
+     msg: 'please check your date . Date start > Date End  .'
+    });
+    return false;
+   }
+
+
+
+    var nom0 =  document.getElementById('gstay_carbundle_croisiere_id_navire').selectedIndex;
+    var nom1 =  document.getElementById('gstay_carbundle_croisiere_id_navire').options;
+    var  nom = nom1[nom0].text ;
+
+    var zarak = new XMLHttpRequest();
+   var d4 ;
+   if(day1 < 10 )
+   {
+    d4="0"+day1;
+   }
+    zarak.open("get","{{ asset('ajax/verifdate.php?nom') }}="+nom+"&date="+year1+"-"+month1+1+"-"+d4,true);
+    zarak.send() // avec le GET  les parametre sont vides ;
+    zarak.onreadystatechange = function result()
+    {
+
+       if (    zarak.responseText == "non")
+       {
+      Lobibox.notify('info', {
+      title: 'ship error ',
+      msg: 'this ship is already in the sea please choose another date    .'
+      });
+      return false;
+      }
+
+    }
+
+
+
+   if(d1 < d3)
+   {
+    Lobibox.notify('error', {
+     title: 'Date error ',
+     msg: 'please check your Start date . it can t be < Date now   .'
+    });
+    return false;
+   }
+   var n="#gstay_carbundle_croisiere_days_";
+   var m1="_jour";
+   var m2="_port_escale";
+   var m3="_a";
+   var m4="_de";
+   var m5="_info";
+   var e=(diff.day-1).toString();
+$("#gstay_carbundle_croisiere_days_0_a").hide();
+   $(n+e+m4).hide();
+   $( "tr" ).length=diff.day;
+   for (var j=0;j<diff.day ;j++)
+   {
+
+    var zarak =j+1;
+    var y = j.toString();
+    $(n+y+m1).val(zarak);
+
+   }
+
+   for (var i = diff.day;i <100 ;i++)
+   {
+    
+   $("#example").show();
+    var x = i.toString();
+
+    $(n+x+m1).hide();
+    $(n+x+m2).hide();
+    $(n+x+m3).hide();
+    $(n+x+m4).hide();
+    $(n+x+m5).hide();
+
+   /* $(n+x+m1).show();
+    $(n+x+m2).show();
+    $(n+x+m3).show();
+    $(n+x+m4).show();
+    $(n+x+m5).show(); */
+
+
+
+
+
+   }
+   $("#step1").hide();
+   $("#step2").show();
+  }
+
+ </script>
+
+
+
+ <script>
+  $(document).ready(function(){
+   $("#example").hide();
+   $("#step2").hide();
+
+
+
+
+
+  });
+
+
+
+
+
+
+
+ </script>
+
+
+ {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

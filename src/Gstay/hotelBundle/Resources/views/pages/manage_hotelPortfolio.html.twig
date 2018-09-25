@@ -1,0 +1,194 @@
+{% extends 'base.html.twig' %}
+{% block title %} Settings-Rooms {% endblock %}
+{% block body %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <link href="{{ asset('jTable/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="{{ asset('notif/lobibox.min.css') }}"/>
+
+    <!-- Wrap -->
+    <div id="wrap">
+
+
+    <!--Banner-->
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+
+                <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+            </a>
+        </div>
+        <!-- Logo -->
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main">
+        <div class="container">
+            <div class="main-cn element-page bg-white clearfix">
+                <!--Breakcrumb-->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href="{{ path('listeventprofile') }}"><i class="fa fa-home"></i></a></li>
+                        <li>Manage Rooms</li>
+                    </ul>
+                </section>
+                <!--End Breakcrumb-->
+
+                <section class="user-profile">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="user-profile__header">
+                                <h4>{{ Hotel.name }}</h4>
+                                <span>Member Since {{ Hotel.dateInscrit | date('M') }} {{ Hotel.dateInscrit  | date('Y') }}</span>
+                                <p>
+
+                                     <img src="{{ asset('images/products/'~ Hotel.imageName) }}" alt="">
+                                </p>
+                            </div>
+
+                            <ul class="user-profile__navigation">
+                                <li><a href="{{ path('mybookingshotel') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">Bookings</a></li>
+                                <li ><a href="{{ path('facilities_settings') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">Facilities</a></li>
+                                <li><a href="{{ path('promo_hotel') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">Manage Offers</a></li>
+                                <li><a href="{{ path('hotel_ProfileSettings') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">Settings</a></li>
+                                <li><a href="{{ path('room_settings') }}"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Rooms & Price Tables </a></li>
+                                <li class="current"><a href="{{ path('hotel_portfolio_settings') }}"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt=""> Portfolio </a></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-9">
+
+                            <div class="user-form">
+                                <div class="row">
+                                    <h3> Manage Personal Portfolio</h3>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                     {{ form_start(form)}}
+                                        <div class="field-input">
+
+                                            <label> Describe this Image </label>
+                                            {{ form_widget(form.description, {'attr': {'class': 'form-control','placeholder':'Description' }}) }}
+                                        </div>
+
+
+                                    <div class="field-input" >
+    <span>Upload</span>
+       {{ form_widget(form.imageFile, {'attr': {'class': 'upload','onchange':'"readURL(this);"'}}) }}
+
+
+
+                                        </div>
+                                         <div class="field-input">
+
+                                            <button id="basicSuccess" class="awe-btn awe-btn-1 awe-btn-small">Add Image </button>
+                                        </div>
+<script>
+  $('#basicSuccess').click(function () {
+                Lobibox.notify('success', {
+                    msg: 'Lorem ipsum dolor sit amet against apennine any created, spend loveliest, building stripes.'
+                });
+            });
+</script>
+                                        {{ form_end(form) }}
+
+
+
+
+
+                                    </div>
+                                  <div class="col-md-6">
+                                        <table id="example" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th> Image </th>
+
+                                                <th> Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+
+                                            <tr>
+                                                <th> Image</th>
+
+                                                <th> Action</th>
+                                            </tr>
+                                            </tfoot>
+
+                                            <tbody>
+                                            {% for hotelPortfolios in hotelPortfolios %}
+
+                                                <tr>
+                                                    <td> <img style="width:50%;" class="img-thumbnail" src="{{ asset('images/products/'~ hotelPortfolios.imageName) }}" alt=""></td>
+
+                                                    <td>
+
+
+                                                         <a hidden id ="test{{ hotelPortfolios.id }}" href="{{ path('delete_hotelPortfolio',{'id': hotelPortfolios.id}) }}"><a><button  id ="popupYesNoBasic{{ hotelPortfolios.id }}" type="button" class="btn btn-danger" >Delete </button>
+
+
+                       <script> $('#popupYesNoBasic{{ hotelPortfolios.id }}').click(function (e) {
+                        e.preventDefault();
+                     Lobibox.confirm({
+                    msg: "Are you sure you want to delete this image?",
+                    callback: function ($this, type) {
+                        if (type === 'yes') {
+                            Lobibox.notify('success', {
+                                msg: 'Image will no longer be shown in your slider.'
+                            });
+                            window.location.href = "{{ path('delete_hotelPortfolio',{'id': hotelPortfolios.id}) }}";
+
+                        } else if (type === 'no') {
+                         e.preventDefault();
+                            Lobibox.notify('info', {
+                                msg: 'Procedure Cancelled.'
+                            });
+                            e.preventDefault();
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+            });</script>
+                                                    </td>
+
+                                                </tr>
+
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+
+{% endblock %}
+         {% block js %}
+        <script type="text/javascript" src="{{ asset('jTable/jquery-2.1.4.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('jTable/jquery.dataTables.min.js') }}"></script>
+        <script type="text/javascript">$(document).ready(function() {
+                $('#example').DataTable();
+            } );
+        </script>
+       <script src="{{ asset('notif/lobibox.js') }}"></script>
+        {% endblock js %}

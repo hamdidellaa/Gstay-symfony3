@@ -1,0 +1,138 @@
+
+{% extends 'base.html.twig' %}
+{% block title %} Tours   {% endblock %}
+{% block body %}
+
+
+    <!-- End Header -->
+
+    <!--Banner-->
+    <section class="banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <div class="container">
+            <!-- Banner Content -->
+            <div class="banner-cn">
+                <!-- Logo -->
+                <div class="logo-banner text-center">
+                    <a href="" title="">
+                        <img src="images/logo-banner.png" alt="">
+                    </a>
+                </div>
+                <!-- Logo -->
+                <!-- Category Singer -->
+                <div class="category-singer clearfix">
+                    <div class="cate-singer-icon float-left">
+                        <h2>Tour</h2>
+                        <img src="{{ asset('bundles/app/images/icon-vacation.png') }}" alt="">
+                    </div>
+                    <p>Over <span>{{ tour.getTotalItemCount }}</span> tour your choice</p>
+                </div>
+                <!-- End Category Singer -->
+                <!-- Form Search -->
+                <div class="form-cn form-tour">
+                    <h2>Where would you like to go?</h2>
+                    <div class="form-search clearfix">
+                        <form method="get">
+                            <div class="form-search clearfix">
+                                <div class="form-field col-md-12">
+                                    <label for="region"><span>Region:</span> Wourldwide, Africa...</label>
+                                    <input type="text" name="region" id="region" value="" class="field-input">
+                                </div>
+
+
+
+                        </form>
+
+
+                    </div>
+                </div>
+                <!-- End Form Search -->
+            </div>
+            <!-- End Banner Content -->
+        </div>
+
+    </section>
+    <!--End Banner-->
+
+    <!-- Hot Sales -->
+    <section class="hotsales">
+
+        <!-- Title -->
+        <div class="title-wrap">
+            <div class="container">
+                <div class="sort-view clearfix">
+                <div class="sort-by float-left">
+
+                </div>
+                <div class="view-by float-right">
+                    <ul>
+                        <li><a href="{{ path('tourslist') }}" title="" class="current"><img src="{{ asset('bundles/app/images/icon-grid.png') }}" alt=""> List view</a></li>
+
+                    </ul>
+                </div>
+                <!-- End Sort by -->
+                <!-- View by -->
+
+                <!-- View by -->
+            </div>
+
+
+            </div>
+        </div>
+        <!-- End Title -->
+
+        <!-- Hot Sales Content -->
+        <div class="container">
+            <div class="cruise-deals-cn clearfix">
+
+                {% for tour in tour %}
+                <!-- Cruise Deal Item -->
+                <div class="col-xs-6 col-md-4 col-lg-3">
+                    <div class="cruise-deal-item">
+                        <figure class="cruise-img">
+                            <a href="{{ path('tourdetail',{'id': tour.id}) }}" title="{{ tour.title }}">
+                                <img height="280" width="100%" src="{% if tour.imageName != "" %} {{ asset('images/products/' ~ tour.imageName ) }} {% else %}{{ asset('images/products/noimage.jpg' ) }} {% endif %} " alt="{{ tour.title }}">
+
+
+                            </a>
+                        </figure>
+                        <div class="cruise-text">
+                            <div class="cruise-name">
+                                <a href="{{ path('tourdetail',{'id': tour.id}) }}" title="{{ tour.title }}">{{ tour.title }}</a>
+                            </div>
+                            <div class="cruise-night">
+                                <span>{{ tour.nbdays }} nights</span> - {{ tour.datedebut|date('M/d') }} - {{ tour.datefin|date('M/d') }}
+                            </div>
+                            <hr class="hr">
+                            <div class="price-box">
+                               <!-- <span class="price old-price">Only  <del>$269</del></span> -->
+                                <span class="price special-price"> DT {{ tour.prix }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Cruise Deal Item -->
+
+            {% endfor %}
+
+
+            </div>
+        </div>
+        <!-- End Hot Sales Content -->
+
+    </section>
+    <!-- End Hot Sales -->
+<section class="destinations">
+    <div class="title-wrap">
+        <div class="container">
+            <div class="travel-title float-left">
+                <h2>   {{ knp_pagination_render(tour) }}</h2>
+            </div>
+
+        </div>
+    </div>
+    </section>
+
+{% endblock body %}

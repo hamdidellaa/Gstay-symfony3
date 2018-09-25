@@ -1,0 +1,253 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="{{ base_dir ~ asset('assets/css/layout.css') }}">
+<link rel="stylesheet" href="{{ base_dir ~ asset('assets/css/essentials.css') }}">
+<link rel="stylesheet" href="{{ base_dir ~ asset('assets/css/color_scheme/green.css') }}">
+<link rel="stylesheet" href="{{ base_dir ~ asset('assets/css/layout-datatables.css') }}">
+<link rel="stylesheet" href="{{ base_dir ~ asset('assets/css/layout-footable-minimal.css') }}">
+<link rel="stylesheet" href="{{ base_dir ~ asset('assets/css/layout-jqgrid.css') }}">
+<link rel="stylesheet" href="{{ base_dir ~ asset('assets/css/layout-nestable.css') }}">
+
+
+
+
+
+
+
+
+            <small>Got a question?</small> {{ cabine.idCroisiere.idProfile.phoneNum }}
+        </div>
+    </section>
+    <!-- End Breakcrumb -->
+
+    <!-- Header Detail -->
+    <section class="head-detail">
+        <div class="head-dt-cn">
+            <div class="row">
+                <div class="col-sm-7">
+                    <h1>{{ cabine.idCroisiere.nom }}</h1>
+                    <ul>
+                        <li>Ship: {{ cabine.idCroisiere.idNavire.nom }}</li>
+                        <li> {{ cabine.idCroisiere.idProfile.nomCompa }}
+                            {% if (cabine.idCroisiere.idProfile.stars == 4) %} <!--no star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                            {% elseif (cabine.idCroisiere.idProfile.stars) == 3 %}<!--one star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                            {% elseif (cabine.idCroisiere.idProfile.stars) == 2 %}<!--one star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                            {% elseif (cabine.idCroisiere.idProfile.stars) == 1 %}<!--one star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                            {% elseif (cabine.idCroisiere.idProfile.stars) == 5 %}<!--one star-->
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+
+
+                            {% endif %}
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="col-sm-5 text-right">
+                    <img src="{{ app.request.getSchemeAndHttpHost() ~ asset('images/products/'~cabine.imageName)}}" >
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="payment-room">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="payment-info">
+                <h2>{{ cabine.nom }} : {{ cabine.type }} </h2>
+                <span class="star-room">
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                    </span>
+                <ul>
+                    <li>
+                        <span>Cabine Type:</span>
+                        {{ cabine.type }}
+                    </li>
+                    <li>
+                        <span>Area:</span>
+                        {{ cabine.superficie }}
+                        m²
+                    </li>
+                    <li>
+                        <span>Maximum number of people:</span>&nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+
+                        {{ cabine.maxper }}
+                    </li>
+                    <li>
+                        <span>Number of beds:</span>&nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+
+                        {{ cabine.nbrLit }}
+                    </li>
+                    <li>
+                        <span>Quantity:</span>
+                        {{ cabine.quantite }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="payment-price">
+
+                <figure>
+
+                </figure>
+                <div class="total-trip">
+
+                    Bathroom with shower:{{ cabine.salleBain }}<br>
+                    Television: {{ cabine.tele }}<br>
+                    Minibar:{{ cabine.miniBar }}<br>
+                    Safety Deposit Box:{{ cabine.coffreFort }}<br>
+                    Air conditioner:{{ cabine.clim }}<br>
+                    spacious dressing:{{ cabine.dressing }}<br>
+
+                    <p>
+                        Trip Total: <ins>600€</ins>
+
+                        <i>Cruise tax 7% not included, Service charge 10% not included
+                        </i>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        $(function() {
+//twitter bootstrap script
+            $("#getbtn").click(function(){
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ asset('ajax/modaltour/getticket.php.php') }}",
+                    data: $('form.controleticket').serialize(),
+                    success: function(msg){
+                        document.getElementById('keygen').innerHTML=msg;
+                        Lobibox.notify('success', {
+                            size: 'large',
+                            msg: '  please check your email to get your ticket . thank you for choosing us  '
+                        });
+                        $('#myModal').close();
+
+                        document.getElementById('ticketnumber').value=1;
+                        document.getElementById('debut').value="";
+                        document.getElementById('fin').value="";
+                        document.getElementById('prixtotal').innerHTML ="";
+
+                    },
+                    error: function(){
+                        alert("failure");
+                    }
+                });
+            });
+        });
+    </script>
+    <script >
+
+
+
+        function checknbticket(x,idtour) {
+
+            var nb = document.getElementById('ticketnumber').value;
+            var prixtotal = nb * x ;
+            document.getElementById('prixtotal').innerHTML = "Total price: "+prixtotal+" DT "  ;
+
+            var khaled = new XMLHttpRequest();
+            khaled.open("get","{{ asset('ajax/zcheck.php?nb') }}="+nb+"&idtour="+idtour,true);
+            khaled.send() // avec le GET  les parametre sont vides ;
+            khaled.onreadystatechange = function result()
+            {
+                document.getElementById("error").innerHTML= khaled.responseText;
+
+
+
+            }
+            var error = document.getElementById('error').innerHTML;
+            if(error.length > 0 )
+            {
+                document.getElementById('getbtn').setAttribute('disabled','disabled');
+
+            }else {
+                document.getElementById('getbtn').removeAttribute("disabled");
+            }
+
+
+
+        }
+
+
+
+
+
+
+    </script>

@@ -1,0 +1,316 @@
+{% extends 'base.html.twig' %}
+{% block title %} add promo {% endblock %}
+{% block body %}
+
+<link href="{{ asset('jTable/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="{{ asset('lobibox-master/dist/css/lobibox.min.css') }}"/>
+
+
+
+    <!-- Wrap -->
+    <div id="wrap">
+
+
+        <!--Banner-->
+        <section class="sub-banner">
+            <!--Background-->
+            <div class="bg-parallax bg-1"></div>
+            <!--End Background-->
+            <!-- Logo -->
+            <div class="logo-banner text-center">
+                <a href="" title="">
+
+                    <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+                </a>
+            </div>
+            <!-- Logo -->
+        </section>
+        <!--End Banner-->
+
+        <!-- Main -->
+        <div class="main">
+            <div class="container">
+                <div class="main-cn element-page bg-white clearfix">
+                    <!--Breakcrumb-->
+                    <section class="breakcrumb-sc">
+                        <ul class="breadcrumb arrow">
+                            <li><a href="{{ path('listeventprofile') }}"><i class="fa fa-home"></i></a></li>
+                            <li>Add Event</li>
+                        </ul>
+                    </section>
+                    <!--End Breakcrumb-->
+
+                    <section class="user-profile">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="user-profile__header">
+                                    <h4>{{ ProfileCroisiere.nomCompa}}_{{ ProfileCroisiere.nomCompa }}</h4>
+                                    <span>Member Sincen {{ ProfileCroisiere.dateInscrit | date('M') }} {{ ProfileCroisiere.dateInscrit | date('Y') }}</span>
+                                    <p>
+
+                                        <img src="{{ asset('images/products/'~ProfileCroisiere.imageName) }}" alt="">
+                                    </p>
+                                </div>
+
+                                <ul class="user-profile__navigation">
+                                    <li><a href=""><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">Bookings</a></li>
+                                    <li ><a href="{{ path('cruiser_profile') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">My profile</a></li>
+                                    <li ><a href="{{ path('show_ship') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">My Ships</a></li>
+                                    <li class="current"><a href="{{ path('show_cruise') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">My Cruises</a></li>
+                                    <li ><a href="{{ path('cruise_pictures') }}"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Pictures</a></li>
+                                    <li><a href="{{ path('fos_user_security_logout') }}"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-10">
+
+                                <div class="user-form">
+                                    <div class="row">
+                                        <h3> Manage Cabines</h3>
+                                    </div>
+                                    <div class="row">
+                                        <h3> Cruise : {{ Croisiere.nom }}       </h3>
+                                    </div>
+                                    <div class="row">
+                                        <h3> My cabines</h3>
+                                        <table id="example" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th> Cabine Name</th>
+                                                <th> Cabine Type </th>
+
+                                                <th> Quantity</th>
+
+                                                <th> Price</th>
+                                                <th> </th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+
+                                            <tr>
+                                                <th> Cabine Name</th>
+                                                <th> Cabine Type </th>
+
+                                                <th> Quantity</th>
+
+                                                <th> Price</th>
+                                                <th> </th>
+                                            </tr>
+                                            </tfoot>
+
+                                            <tbody>
+                                            {% for Cabine in Cabine %}
+
+                                                <tr>
+                                                    <td> {{ Cabine  .nom }}</td>
+                                                    <td> {{ Cabine.type  }}</td>
+
+                                                    <td> {{ Cabine.quantite }} </td>
+
+                                                    <td>
+
+                                                     {{ Cabine.prix }}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ path('delete_cabine',{'id': Cabine.id}) }}">   <button  type="submit" class="btn btn-danger" >Delete Cabine</button></a>
+                                                    </td>
+
+                                                </tr>
+
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <h3> Add New cabines</h3>
+
+
+                                            {{ form_start(form, {'attr': {'onsubmit':'return validateForm()' }} ) }}
+                                            <div class="col-md-5">
+
+                                            <div class="field-input">
+                                                <label>Cabine Name</label>
+                                                {{ form_widget(form.nom, {'attr': {'class': 'form-control','placeholder':'Cabine Name ' }}) }}
+
+                                            </div>
+
+                                            <div class="field-input">
+                                                <label>Cabine Type</label>
+                                                {{ form_widget(form.type, {'attr': {'class': 'form-control','placeholder':'Cabine Type ' }}) }}
+
+                                            </div>
+
+                                            </div>
+                                        <div class="col-md-5">
+                                            <div class="field-input">
+                                                <label>Area</label>
+                                                {{ form_widget(form.superficie, {'attr': {'class': 'form-control','placeholder':'Area ' }}) }}
+
+                                            </div>
+                                            <div class="field-input">
+                                                <label>Maximum number of people</label>
+                                                {{ form_widget(form.maxper, { 'attr'  : {'class': 'form-control','placeholder':'Maximum number of people '  }}) }}
+
+                                            </div>
+                                            <div class="field-input">
+                                                <label>Number of beds</label>
+                                                {{ form_widget(form.nbr_lit, {  'attr' :{'class': 'form-control','placeholder':'Number of beds ' }}) }}
+
+                                            </div>
+
+
+
+
+
+
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="col-md-5">
+                                                <div class="field-input">
+                                                    <label> Safety Deposit Box
+                                                    </label>
+                                                    {{ form_widget(form.coffre_fort, {'attr': {'class': 'form-control', 'placeholder':'Safety Deposit Box' }}) }}
+
+                                                </div>
+                                                <div class="field-input">
+                                                    <label> Air conditioner
+                                                    </label>
+                                                    {{ form_widget(form.clim, {'attr': {'class': 'form-control' ,'placeholder':'Air conditioner' }}) }}
+
+                                                </div>
+                                                <div class="field-input">
+                                                    <label> spacious dressing
+                                                    </label>
+                                                    {{ form_widget(form.dressing, {'attr': {'class': 'form-control', 'placeholder':'spacious dressing' }}) }}
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+
+
+                                                <div class="field-input">
+                                                    <label>Bathroom with shower</label>
+                                                    {{ form_widget(form.salle_bain, { 'attr': {'class': 'form-control','placeholder':'Bathroom with shower ' }}) }}
+
+                                                </div>
+                                                <div class="field-input">
+                                                    <label>Television</label>
+                                                    {{ form_widget(form.tele, {'attr': {'class': 'form-control','placeholder':'Television ' }}) }}
+
+                                                </div>
+
+
+                                                <div class="field-input">
+                                                    <label>Minibar
+                                                    </label>
+                                                    {{ form_widget(form.mini_bar, {'attr': {'class': 'form-control','placeholder':'Minibar' }}) }}
+
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="col-md-10">
+                                        <div class="field-input">
+                                            <label>Quantity </label>
+
+                                            {{ form_widget(form.quantite, {'attr': {'class': 'form-control' ,'placeholder':'Quantity' }}) }}
+
+
+                                        </div>
+                                        <div class="field-input">
+                                            <label>Price
+                                            </label>
+                                            {{ form_widget(form.prix, {'attr': {'class': 'form-control' ,'placeholder':'Price in euros' }}) }}
+
+                                        </div>
+
+
+
+                                        <div class="field-input">
+                                            <label>Cabine Picture</label>
+                                            {{ form_widget(form.imageFile) }}
+
+                                        </div>
+
+
+
+
+
+
+
+
+
+
+                                    <div class="field-input">
+                                        <a href="{{ path('show_cruise' )}}"><button type="button" class="awe-btn awe-btn-1 awe-btn-medium" >Finished</button></a>
+                                        <a href="{{ path('add_cabine',{'idd': Croisiere.id}) }}">   <button  type="submit" class="awe-btn awe-btn-1 awe-btn-medium" >Add Cabine</button></a>
+
+
+                                    </div>
+                                            </div>
+
+                                        </div>
+                                    {{ form_end(form) }}
+
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {% block js %}
+            <script type="text/javascript" src="{{ asset('jTable/jquery-2.1.4.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('jTable/jquery.dataTables.min.js') }}"></script>
+            <script type="text/javascript">$(document).ready(function() {
+                    $('#example').DataTable();
+                } );
+            </script>
+        {% endblock js %}
+        <!-- End Main -->
+
+        {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,190 @@
+
+{% extends 'base.html.twig' %}
+{% block title %} Events   {% endblock %}
+{% block body %}
+
+
+<div id="wrap">
+
+
+    <!-- Header -->
+
+    <!-- End Header -->
+
+    <!--Banner-->
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+                <img src="images/logo-banner.png" alt="">
+            </a>
+        </div>
+        <!-- Logo -->
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main">
+        <div class="container">
+            <div class="main-cn tour-page bg-white clearfix">
+                <div class="row">
+
+                    <!-- Cruise Right -->
+                    <div class="col-md-9 col-md-push-3">
+
+                        <!-- Breakcrumb -->
+                        <section class="breakcrumb-sc">
+                            <ul class="breadcrumb arrow">
+
+                            </ul>
+                        </section>
+                        <!-- End Breakcrumb -->
+
+                        <section class="cruise-list">
+
+                            <!-- Sort by and View by -->
+                            <div class="sort-view clearfix">
+                                <!-- Sort by -->
+                                <div class="sort-by float-left">
+                                    <label>Sort by: &nbsp;&nbsp;</label>
+                                    <th>{{ knp_pagination_sortable(pagination, ' sold tickets ', 'a.ticketvendu') }}</th>&nbsp;
+                                    <th {% if pagination.isSorted('a.prix') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'price', 'a.prix') }}</th>&nbsp;
+                                    <th>{{ knp_pagination_sortable(pagination, ' Start Date ', 'a.date_debut') }}</th>&nbsp;
+                                </div>
+                                <!-- End Sort by -->
+                                <!-- View by -->
+
+                                <!-- View by -->
+                            </div>
+                            <!-- End Sort by and View by -->
+
+                            <!-- Cruise Content -->
+                            <div class="cruise-list-cn tour-list-cn">
+                                {% if  pagination.getTotalItemCount  == 0 %}
+                                <div class="cruise-item">
+                                    <h2> 0 items found </h2>
+                                    </div>
+                                {% endif %}
+                                {% for event in pagination %}
+                                <!-- Item -->
+                                <div class="cruise-item">
+                                    <figure class="cruise-img">
+
+                                        <a href="{{ path('eventdetail',{'id': event.id}) }}">
+                                            <img src=" {% if event.imageName != "" %} {{ asset('images/products/' ~ event.imageName ) }} {% else %}{{ asset('images/products/noimage.jpg' ) }} {% endif %} " alt="">
+                                        </a>
+                                    </figure>
+                                    <div class="cruise-text">
+                                        <div class="cruise-name">
+                                            <a href="{{ path('eventdetail',{'id': event.id}) }}"> {{ event.titre }}</a>
+                                        </div>
+                                        <ul class="ship-port">
+                                            <li>
+                                                <span class="label">organizer:</span>
+                                                    {{ event.idprofile.nom }}_{{ event.idprofile.prenom }}
+
+                                            </li>
+                                            <li>
+                                                <span class="label">Theme:</span>
+                                                    {{ event.theme }}
+                                            </li>
+                                            <li>
+                                                <span class="label">Type:</span>
+                                                {{ event.type }}
+                                            </li>
+                                            <li>
+                                                <span class="label">Start date:</span>
+                                                {{ event.datedebut | date('Y/m/d')}}
+                                            </li>
+                                        </ul>
+
+                                        <div class="price-box">
+                                            <span class="price">
+                                                From<br>
+                                                <ins> {{ event.prix }} Dt</ins>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Item -->
+                                {% endfor%}
+
+                            </div>
+                            <!-- End Cruise Content -->
+
+
+
+                                    <!--<li class="first"><a href="" title="">First</a></li>-->
+                                    {{ knp_pagination_render(pagination) }}
+
+
+
+                        </section>
+                    </div>
+                    <!-- End Cruise Right -->
+
+                    <!-- Sidebar Hotel -->
+                    <div class="col-md-3 col-md-pull-9">
+                        <!-- Sidebar Content -->
+                        <div class="sidebar-cn">
+                            <!-- Search Result -->
+                            <div class="search-result">
+                                <p>
+                                    We found <br>
+                                    <ins>    {{ pagination.getTotalItemCount }}</ins> <span>properties availability</span>
+                                </p>
+                            </div>
+                            <!-- End Search Result -->
+                            <!-- Search Form Sidebar -->
+                            <div class="search-sidebar">
+                                <div class="row">
+                                    <form method="get">
+                                    <div class="form-search clearfix">
+                                        <div class="form-field col-md-12">
+                                            <label for="region"><span>Region:</span> Wourldwide, Africa...</label>
+                                            <input type="text" name="region" id="region" value="" class="field-input">
+                                        </div>
+                                        <div class="form-field col-md-12">
+                                            <label for="region"><span>Theme:</span> </label>
+                                            <input type="text" name="theme" id="theme" value="" class="field-input">
+                                        </div>
+
+
+                                        <div class="form-submit col-md-12">
+                                            <button type="submit" class="awe-btn awe-btn-medium awe-search">Search</button>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Search Form Sidebar -->
+                            <!-- Narrow your results -->
+                            <div class="narrow-results">
+                                <h6>Narrow your results</h6>
+                                <div class="narrow-form">
+                                    <form  method="get">
+                                        <input type="text" name="title" class="narrow-input" placeholder="Event title">
+                                        <button class="submit-narrow"></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- End Narrow your results -->
+                            <!-- Price Slider -->
+
+
+
+                        </div>
+                        <!-- End Sidebar Content -->
+                    </div>
+                    <!-- End Sidebar Hotel -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+{% endblock body %}

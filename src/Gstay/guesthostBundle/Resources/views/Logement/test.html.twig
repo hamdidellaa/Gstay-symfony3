@@ -1,0 +1,14 @@
+{% for logement in logements %}
+
+    {% if  logement.idlogementuser  ==  profile.id  %}
+
+
+        MYHOUSE
+
+
+
+    {% else %}
+        <a href="{{ path('addreservation',{'idLogement':logements.idlogement }) }}" title="" class="awe-btn awe-btn-1 awe-btn-lager">ADD TO MY LOGEMENT</a>
+
+    {% endif %}
+{%  endfor %}

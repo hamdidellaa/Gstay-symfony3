@@ -1,0 +1,241 @@
+{% extends 'base.html.twig' %}
+{% block title %} Start Promo {% endblock %}
+{% block body %}
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="{{ asset('notif/lobibox.min.css') }}"/>
+    <!-- Wrap -->
+    <div id="wrap">
+
+
+    <!--Banner-->
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+
+                <img src="{{ asset('bundles/app/images/logo-banner.png') }}" alt="">
+            </a>
+        </div>
+        <!-- Logo -->
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main">
+        <div class="container">
+            <div class="main-cn element-page bg-white clearfix">
+                <!--Breakcrumb-->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href="{{ path('listeventprofile') }}"><i class="fa fa-home"></i></a></li>
+                        <li>Add Promo</li>
+                    </ul>
+                </section>
+                <!--End Breakcrumb-->
+
+                <section class="user-profile">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="user-profile__header">
+                                <h4>{{ Hotel.name }}</h4>
+                                <span>Member Since {{ Hotel.dateInscrit | date('M') }} {{ Hotel.dateInscrit  | date('Y') }}</span>
+                                <p>
+
+                                  <img src="{{ asset('images/products/'~ Hotel.imageName) }}" alt="">
+                                </p>
+                            </div>
+
+                           <ul class="user-profile__navigation">
+                                <li><a href="{{ path('mybookingshotel') }}"><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">Bookings</a></li>
+                                <li ><a href="{{ path('facilities_settings') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">Facilities</a></li>
+                                <li  class="current"><a href="{{ path('promo_hotel') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">Manage Offers</a></li>
+                                <li><a href="{{ path('hotel_ProfileSettings') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">Settings</a></li>
+                                <li><a href="{{ path('room_settings') }}"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Rooms & Price Tables </a></li>
+                                <li><a href="{{ path('hotel_portfolio_settings') }}"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt=""> Portfolio </a></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+                            </ul>
+
+                        </div>
+                        <div class="col-md-9">
+
+                            <div class="user-form">
+                                <div class="row">
+                                    <h3> Information of your Promo</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h3> Global Information</h3>
+                                        {{ form_start(form ,{ 'attr':{'id': 'formx','onsubmit':'return validateForm();'}})}}
+                                        <div class="field-input">
+                                            <label> Title</label>
+
+                                            {{ form_widget(form.name, {'id':'idtitle','attr': {'class': 'form-control','placeholder':'Title' }}) }}
+                                        </div>
+                                         <div class="field-input">
+
+                                            <label> Status </label>
+                                            {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+                                        </div>
+
+
+                                        <div class="field-input">
+                                            <label> Promo %</label>
+                                            {{ form_widget(form.pourcentage, {'attr': {'class': 'form-control','placeholder':'pourcentage , % ' }}) }}
+
+                                        </div>
+
+                                        <div class="field-input">
+                                            <label> Planing</label>
+                                            {{ form_widget(form.description, {'attr': {'class': 'ckeditor' }}) }}
+
+                                        </div>
+
+
+                                        <div class="field-input">
+                                        <button id="popupYesNoBasic" class="btn btn-warning">Confirm</button>
+                                    </div>
+
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h3> Room & Dates </h3>
+                                        <div class="field-input">
+
+                                            <label> Room </label>
+                                            {{ form_widget(form.roomConcerned, {'attr': {'class': 'form-control','placeholder':'Room , Bangalow , Suite ...' }}) }}
+                                        </div>
+                                         <div class="field-input">
+
+                                            <label> Maximum Reservations </label>
+                                            {{ form_widget(form.maxplace,  {'id': 'maxplace','attr': {'class': 'form-control','placeholder':'Maximum Reservations' }}) }}
+                                        </div>
+
+                                         <div class="form-field field-date">
+                                           <label> Date Begin </label>
+                                            {{ form_widget(form.date_begin , {'id':'debut','attr':{'placeholder':'Check in','class':'form-control' }}) }}
+
+                            </div>
+
+
+
+
+                                        <div class="field-input">
+                                            <label> Date End </label>
+                                            {{ form_widget(form.date_end , {'id':'fin','attr':{'placeholder':'Check in','class':'form-control' }}) }}
+
+                                        </div>
+                                        <h3> Youtube Link</h3>
+                                        <div class="field-input">
+                                            <label> Video Youtube ID </label>
+                                            <p> (youtube.com/watch?v=<strong>pWIEAW_hQxM</strong>)</p>
+                                                                   {{ form_widget(form.youtube, {'attr': {'class': 'form-control','placeholder':'Embed youtube video link' }}) }}
+
+                                        </div>
+                                     </div>
+                                     <fieldset>
+
+                                </fieldset>
+ <script> $('#popupYesNoBasic').click(function (e) {
+                       e.preventDefault();
+                     Lobibox.confirm({
+                    msg: "Are you sure you want to start this promo?",
+                    callback: function ($this, type) {
+                        if (type === 'yes') {
+                           var x=document.getElementById('debut').value;
+                var y=document.getElementById('fin').value;
+
+                        var d1= new Date(x);
+                var d2= new Date(y);
+
+
+                var timeDiff = Math.abs(d2.getTime() - d1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                var d3 = new Date();
+
+
+                var title=document.getElementById('idtitle').value;
+                var maxplace=document.getElementById('maxplace').value;
+                 if ( maxplace < 10 ){
+
+                    Lobibox.notify('error', {
+                        size: 'large',
+                        msg: 'Invalid Number : Must be Above 10'
+                    });
+
+                    return false;
+                } //date now
+                if ( d3 > d2 ){
+
+                    Lobibox.notify('error', {
+                        size: 'large',
+                        msg: 'Promo must start at least today '
+                    });
+
+                    return false;
+                } //date now
+if ( d1 > d2 ){
+
+        Lobibox.notify('error', {
+            size: 'large',
+            msg: '  Start Date must be inferior compared to End Date '
+        });
+
+    return false;
+}
+if ( title.length < 5 ){
+
+        Lobibox.notify('error', {
+            size: 'large',
+            msg: '  Title Field must  contain at least 5 Charachters '
+        });
+
+    return false;
+}
+
+
+                        else {    Lobibox.notify('success', {
+                                msg: 'This Offer will be shown on Our List Thanks for using Gstay.'
+                            });
+                              document.getElementById("formx").submit(); }
+
+                        } else if (type === 'no') {
+                            Lobibox.notify('info', {
+                                msg: 'Procedure Cancelled.'
+                            });
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+            });</script>
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- End Main -->
+
+{% endblock %}
+          {% block js %}
+          <script type="text/javascript" src="{{ asset('assets/plugins/bootstrap.datepicker/js/bootstrap-datepicker.js') }}" ></script>
+        <script type="text/javascript" src="{{ asset('assets/plugins/moment.js') }}"></script>
+
+   <script src="{{ asset('notif/lobibox.js') }}"></script>
+        {% endblock js %}

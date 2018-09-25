@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% block title %} Blog Dtails{% endblock %}
+{% block body %}
+    <div class="main">
+        <div class="container">
+            <div class="main-cn bg-white clearfix">
+                <!--Breakcrumb-->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li>Blog Detail</li>
+                    </ul>
+                    <!-- Search Blog -->
+                    <div class="search-blog">
+                        <form action="blogsearch">
+                            <input type="text" class="search-blog-input" placeholder="To seach type and hit enter">
+                            <button class="btn-search-blog">Search</button>
+                        </form>
+                    </div>
+                    <!-- Search Blog -->
+                </section>
+                <!--End Breakcrumb-->
+                <section class="blog-content">
+                    <div class="row">
+
+                        <!-- Blog Right -->
+                        <div class="col-md-9 col-md-push-3">
+                            <!-- Post Singel -->
+                            <div class="post post-single">
+
+                                <!-- Create Date -->
+
+                                <!-- End Create Date -->
+                                <!-- Title -->
+
+                                <!-- Title -->
+                                <!-- Photo -->
+                                <div class="post-media">
+                                    <div class="image-wrap">
+                                        <h3>{{ Blog.titre }}</h3>
+
+                                        <div class="image-wrap">
+                                            <img src="{{ asset('images/products/'~ Blog.imageName) }}" alt="" height="200" width="200">
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <!-- End Photo -->
+                                <!-- Description -->
+                                <div class="post-content">
+
+                                    <div class="post-media">
+
+                                   <H1> <p>
+                                           {% autoescape %}
+                                        {{ Blog.Description|raw}}
+                                           {% endautoescape %}
+                                    </p>
+                                   </H1>
+                                    </div>
+                                </div>
+                                <!-- End Description -->
+                                <!-- Post Meta -->
+
+                                <!-- End Post Meta -->
+                                <!-- Author About -->
+                                <!-- Comment -->
+                                <!-- ENd Comment -->
+                                <!-- Leave Comment -->
+                                <!-- End Leave Comment -->
+
+                            </div>
+                            <!-- End Post Single -->
+                        </div>
+                        <!-- End Blog Right -->
+
+                        <!-- Blog Left -->
+                        <div class="col-md-3 col-md-pull-9">
+
+                            <!-- Widget Category Blog -->
+
+                        </div>
+                        <!-- End Blog Left -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    {% endblock %}

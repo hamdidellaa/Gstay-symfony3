@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+{% block title %} Setting {% endblock %}
+{% block body %}
+
+
+
+    <!-- Wrap -->
+
+
+    <!--Banner-->
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+
+                <img src=" {{ asset('bundles/app/images/logo-banner.png') }}" >
+            </a>
+        </div>
+        <!-- Logo -->
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main">
+        <div class="container">
+            <div class="main-cn element-page bg-white clearfix">
+                <!--Breakcrumb-->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li>My Profile</li>
+                    </ul>
+                </section>
+                <!--End Breakcrumb-->
+
+                <section class="user-profile">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="user-profile__header">
+                                <h4>{{ ProfileCroisiere.nomCompa}}_{{ ProfileCroisiere.nomCompa }}</h4>
+                                <span>Member Sincen {{ ProfileCroisiere.dateInscrit | date('M') }} {{ ProfileCroisiere.dateInscrit | date('Y') }}</span>
+                                <p>
+
+                                    <img src="{{ asset('images/products/'~ProfileCroisiere.imageName) }}" alt="">
+                                </p>
+                            </div>
+
+                            <ul class="user-profile__navigation">
+                                <li><a href=""><img src="{{ asset('bundles/app/images/icon/icon-cart.png') }}" alt="">Bookings</a></li>
+                                <li class="current"><a href="{{ path('cruiser_profile') }}"><img src="{{ asset('bundles/app/images/icon/icon-user.png') }}" alt="">My profile</a></li>
+                                <li><a href="{{ path('show_ship') }}"><img src="{{ asset('bundles/app/images/icon/icon-review.png') }}" alt="">My Ships</a></li>
+                                <li><a href="{{ path('show_cruise') }}"><img src="{{ asset('bundles/app/images/icon/icon-setting.png') }}" alt="">My Cruises</a></li>
+                                <li ><a href="{{ path('cruise_pictures') }}"><img src="{{ asset('bundles/app/images/icon/icon-heart.png') }}" alt="">Pictures</a></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}"><img src="{{ asset('bundles/app/images/icon/icon-back.png') }}" alt="">Sign out</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-9">
+                            <h2 class="user-profile__title">Settings</h2>
+                            <div class="user-form">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+
+                                        <h3>Company Information</h3>
+                                        {{ form_start(form)}}
+                                        <div class="field-input">
+                                            {{ form_widget(form.nom_compa, {'attr': {'class': 'input-text','placeholder':'Company Name' }}) }}
+
+                                        </div>
+
+                                        <div class="field-input">
+                                            {{ form_widget(form.stars, {'attr': {'class': 'form-control','placeholder':'Stars' }}) }}
+                                        </div>
+
+                                        <div class="field-input">
+                                            {{ form_widget(form.mat_fisc, {'attr': {'class': 'input-text','placeholder':'tax registration number ' }}) }}
+
+                                        </div>
+                                        <div class="field-input">
+                                            {{ form_widget(form.post_comp, {'attr': {'class': 'input-text','placeholder':' Your post in the company ' }}) }}
+
+                                        </div>
+                                        <div class="field-input">
+                                            {{ form_widget(form.country, {'attr': {'class': 'input-text','placeholder':'Country' }}) }}
+
+                                        </div>
+                                        <div class="field-input">
+                                            {{ form_widget(form.state, {'attr': {'class': 'input-text','placeholder':'State' }}) }}
+
+                                        </div>
+
+                                        <div class="field-input">
+                                            {{ form_widget(form.city, {'attr': {'class': 'input-text','placeholder':'City' }}) }}
+
+                                        </div>
+                                        <div class="field-input">
+                                            {{ form_widget(form.street_adresse, {'attr': {'class': 'input-text','placeholder':'Street' }}) }}
+
+                                        </div>
+
+
+
+                                        <div class="field-input">
+                                            {{ form_widget(form.Save, {'attr': {'class': 'awe-btn awe-btn-1 awe-btn-medium' }}) }}
+
+
+                                        </div>
+                                        </div>
+
+
+
+                                    <div class="col-md-6">
+                                        <h3>User Information</h3>
+
+                                        <div class="field-input">
+                                            {{ form_widget(form.first_name, {'attr': {'class': 'input-text','placeholder':'First Name' }}) }}
+
+                                        </div>
+                                        <div class="field-input">
+                                            {{ form_widget(form.last_name, {'attr': {'class': 'input-text','placeholder':'Last Name' }}) }}
+                                        </div>
+
+                                        <div class="field-input">
+                                            {{ form_widget(form.phone_num, {'attr': {'class': 'input-text','placeholder':'phone number' }}) }}
+
+                                        </div>
+
+                                        <div class="field-input">
+                                            {{ form_widget(form.fax, {'attr': {'class': 'input-text','placeholder':'Fax' }}) }}
+
+                                        </div>
+
+                                        {{ form_end(form) }}
+                                        <h3>Change Password</h3>
+                                        {{ form_start(form1) }}
+                                        <div class="field-input">
+                                            {{ form_widget(form1.current_password, {'attr': {'class': 'input-text','placeholder':'current password' }}) }}
+                                        </div>
+                                        <div class="field-input">
+                                            {{ form_widget(form1.plainPassword.first, {'attr': {'class': 'input-text','placeholder':'new password' }}) }}
+                                        </div>
+                                        <div class="field-input">
+                                            {{ form_widget(form1.plainPassword.second, {'attr': {'class': 'input-text','placeholder':'new password again' }}) }}
+                                        </div>
+                                        <div class="field-input">
+                                            <button class="awe-btn awe-btn-1 awe-btn-medium">Change Password</button>
+                                        </div>
+                                        {{ form_end(form1) }}
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- End Main -->
+
+{% endblock %}

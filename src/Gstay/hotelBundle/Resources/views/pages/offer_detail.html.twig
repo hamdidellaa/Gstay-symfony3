@@ -1,0 +1,608 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ promoHotel.idHotel.name }}  {{ promoHotel.name }}{% endblock %}
+{% block body %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="{{ asset('notif/lobibox.min.css') }}"/>
+
+    <script src="{{ asset('ajax/jquery-1.8.0.js') }}"> </script>
+    <link rel="stylesheet" href="{{ asset('bundles/app/plugin/flip/compiled/flipclock.css') }}"/>
+
+
+    <!--Modal-->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <img src="{{ asset('images/products/'~ promoHotel.roomConcerned.imageName) }}" alt="">
+
+                <div class="modal-header" style=" max-height:50%;background-image: url("{{ asset('images/products/'~ promoHotel.roomConcerned.imageName) }}");">
+                    <button type="button" id="closex" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Booking For {{ promoHotel.roomConcerned.name }} Between {{ promoHotel.dateBegin|date("Y-M-d") }} to {{ promoHotel.dateEnd|date("Y-M-d") }} </h4>
+                </div>
+                <div class="modal-body">
+                    {% if app.user %}
+
+                        <form class="controleticket">
+
+
+
+
+
+                            <input " value="{{ app.user.id }} " type="text" name="iduser" hidden>
+                            <input " value="{{ promoHotel.id }} " type="text" name="idpromo" hidden>
+                            <input  value="{{ app.user.type }} " type="text" name="type" hidden>
+                            <input  value="{{ promoHotel.pourcentage }} " type="text" name="type" id="pourcentage" hidden>
+
+
+
+                            <input class="form-control" value="{{ app.user.email }} " type="text" name="email" readonly>
+
+
+                            <div class="col-md-6">
+
+    <label >Check In</label>
+    <input type='date' class="form-control" name="debut" id="debut" >
+</div>
+
+                            <div class="col-md-6">
+                            <label >Check Out</label>
+                            <input type ='date' class="form-control" name="fin" id="fin" >
+</div>
+
+                            <div class="col-md-6">
+                            <label > Rooms number </label>
+                            <input class="form-control"  type="number" min="1" max="99" id="ticketnumber" name="nbticket" value="1" onchange="checknbticket({{ promoHotel.roomConcerned.price }},'{{ promoHotel.pourcentage }}','{{ promoHotel.id }}')">
+                            </div>
+                            <div class="col-md-6">
+                            <p id="prixtotal" > Total price:  </p> <span  id="error" style="background-color: red"></span>
+                            </div>
+
+ <strong><span  id="keygen" ></span></strong>
+
+
+
+                        </form>
+                    {% else %}
+                        <p>You are not connected !!</p>
+                        <div class="row">
+                            <div class=" col-md-6">
+                                <a href="{{ path('fos_user_security_login', { 'url': app.request.uri }) }}"> <button class="awe-btn-medium">Login</button></a>
+                            </div>
+
+                            <div class=" col-md-6">
+                                <button class="awe-btn-medium">Sing up</button>
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    {% if app.user %}
+                        <button onclick="test()" class="btn btn-success" id="getbtn" >Get </button>
+                    {% endif %}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--Modal-->
+    <!--Banner-->
+    <section class="sub-banner">
+        <!--Background-->
+        <div class="bg-parallax bg-1"></div>
+        <!--End Background-->
+        <!-- Logo -->
+        <div class="logo-banner text-center">
+            <a href="" title="">
+                <img src="images/logo-banner.png" alt="">
+            </a>
+        </div>
+        <!-- Logo -->
+    </section>
+    <!--End Banner-->
+
+    <!-- Main -->
+    <div class="main main-dt">
+        <div class="container">
+            <div class="main-cn bg-white clearfix">
+                <!-- Breakcrumb -->
+                <section class="breakcrumb-sc">
+                    <ul class="breadcrumb arrow">
+                        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+                        <li><a href="hotel.html" title="">Hotels</a></li>
+                        <li><a href="#" title="{{ promoHotel.idHotel.country }}">{{ promoHotel.idHotel.country }} </a></li>
+                        <li>{{ promoHotel.idHotel.gouvernorat }}</li>
+                        <li>{{ promoHotel.idHotel.name }}</li>
+                    </ul>
+                    <div class="support float-right">
+                        <small>Got a question?</small> {{ promoHotel.idHotel.phone }}
+                    </div>
+                </section>
+                <!-- End Breakcrumb -->
+
+                <!-- Header Detail -->
+                <section class="head-detail">
+                    <div class="head-dt-cn">
+                        <div class="row">
+                            <div class="col-sm-7">
+
+                                <h1>{{ promoHotel.idHotel.name }}  , {{ promoHotel.idHotel.gouvernorat }}</h1>
+                                <div class="start-address">
+                                    {% if (promoHotel.idHotel.stars == 4) %} <!--no star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                    {% elseif (promoHotel.idHotel.stars) == 3 %}<!--one star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                    {% elseif (promoHotel.idHotel.stars) == 2 %}<!--one star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                    {% elseif (promoHotel.idHotel.stars) == 1 %}<!--one star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                    {% elseif (promoHotel.idHotel.stars) == 5 %}<!--one star-->
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+                                        <i class="fa fa-star" style ="color:#FFD700" aria-hidden="true"></i>
+
+
+                                    {% endif %}
+                                    <address class="address">
+                                        {{ promoHotel.idHotel.adresse }},{{ promoHotel.idHotel.gouvernorat }},{{ promoHotel.idHotel.country }}
+                                    </address>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-5 text-right">
+                                <p class="price-book">
+                                    From-<span>{{ promoHotel.roomConcerned.price }} TND </span>
+                                    to -<span>{{ promoHotel.roomConcerned.price - (promoHotel.roomConcerned.price *  promoHotel.pourcentage ) / 100  }}</span> TND
+                                    {{ promoHotel.pourcentage }} %  on <strong>{{ promoHotel.roomConcerned.name }}  </strong><br>
+{% if app.user %}
+                                    {% if (promoHotel.status == 1 ) or (app.user.id == promoHotel.idHotel.idUser.id) %}
+{% endif %}
+                                        <button class="awe-btn awe-btn-1 awe-btn-lager"  disabled >Book Now</button>
+                                    {% else %}
+                                        <a href="" title="" class="awe-btn awe-btn-1 awe-btn-lager" data-toggle="modal" data-target="#myModal">Book Now</a>
+
+
+{% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End Header Detail -->
+
+                <!-- Detail Slide -->
+                <section class="detail-slider">
+                    <!-- Lager Image -->
+
+                    <!-- End Lager Image -->
+                    <!-- Thumnail Image -->
+
+                    <!-- End Thumnail Image -->
+                </section>
+                <!-- End Detail Slide -->
+                <!-- Hotel Content One -->
+                <section class="hotel-content detail-cn" id="about-area">
+
+                    <div class="row">
+                        <div class="col-lg-3 detail-sidebar">
+                            <!-- Hight Light -->
+                            <div class="hight-light">
+
+                                <h2> {% if promoHotel.status == 0 %}
+                                        <span class="label label-success">
+
+                                                 Active
+                                                </span>
+                                    {% endif %}
+                                    {% if promoHotel.status == 1 %}
+                                        <span class="label label-danger">
+
+                                                 Disabled
+                                                </span>
+                                    {% endif %}
+                                    {% if promoHotel.status == 02%}
+                                        <span class="label label-info">
+
+                                                 On Going
+                                                </span>
+                                    {% endif %}</h2>
+                                <!-- Vote Text -->
+                                <div class="row">
+                                    <!-- Recommend -->
+                                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-6 vote-text">
+                                        <p><span> -{{ promoHotel.pourcentage }}% </span></p>
+                                        <small></small>
+                                        <a href="" title=""></a>
+
+                                    </div>
+                                    <!-- End Recommend -->
+                                    <!-- Tripadvitsor -->
+                                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-6  vote-text">
+                                        <img src="{{ asset('images/products/'~ promoHotel.roomConcerned.imageName) }}" alt="">
+
+                                        <small></small>
+                                        <a href="" title="">{{ promoHotel.roomConcerned.name }}</a>
+                                    </div>
+                                    <!-- End Tripadvitsor -->
+
+                                </div>
+                                <!-- End Vote Text -->
+
+
+
+                            </div>
+                            <!-- End Hight Light -->
+                            <div class="scroll-heading">
+                                <h2>Description</h2>
+                                <hr class="hr">
+                                <a href="#check-rates" title="">{{ promoHotel.roomConcerned.name }}</a>
+                                <a href="#hl-features" title="">Countdown</a>
+
+                                <a href="#about-area" title="">About Area</a>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="col-lg-9 customer-like">
+                            <h2>Why customer like this hotel</h2>
+
+                            <div class="row">
+                                <div class="col-lg-5 hl-customer-like">
+                                    <h3> Description</h3>
+<p style="font-size:20px;">
+    {{ promoHotel.description|raw }}
+</p>
+                                        </div>
+                                    <div class="col-lg-7 hl-customer-like">
+ {% if promoHotel.youtube != NULL %}
+                                        <iframe width="420" height="315"
+                                                src="https://www.youtube.com/embed/{{ promoHotel.youtube|raw }}">
+                                        </iframe>
+                                        {% endif %}
+                                        </div>
+
+                            </div>
+
+
+
+                        </div>
+                        <!-- End Description -->
+                    </div>
+
+                </section>
+                <!-- End Hotel Content One -->
+
+                <!-- Check Rates-->
+                <section class="check-rates detail-cn" id="check-rates">
+                    <div class="row">
+                        <div class="col-lg-3 detail-sidebar">
+                            <div class="scroll-heading">
+                                <h2>{{ promoHotel.roomConcerned.name }}</h2>
+                                <hr class="hr">
+                                <a href="#hl-features" title="">Countdown</a>
+
+                                <a href="#about-area" title="">Description</a>
+                                <a href="#review-detail" title="">Reviews</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 check-rates-cn">
+                            <h2 class="my-profile__title">Room Information</h2>
+                            <h3> {{ promoHotel.roomConcerned.name }}</h3> <h5> {{ promoHotel.roomConcerned.guest }} Guests </h5>
+
+                            <table class="table table-striped  table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th style="max-width: 200px;">View</th>
+
+                                    <th> Description </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td style="max-width: 200px;"> <img src="{{ asset('images/products/'~ promoHotel.roomConcerned.imageName) }}" alt=""></td>
+
+                                    <td>{{ promoHotel.roomConcerned.description|raw  }}</td>
+
+                                </tr>
+
+                                </tbody>
+                            </table>
+                    </div>
+                </section>
+                <!-- End Check Rates -->
+                <!-- Hotel Features -->
+                <section class="hl-features detail-cn" id="hl-features">
+                    <div class="row">
+                        <div class="col-lg-3 detail-sidebar">
+                            <div class="scroll-heading">
+                                <h2>Countdown</h2>
+                                <hr class="hr">
+                                <a href="#check-rates" title="">{{ promoHotel.roomConcerned.name }}</a>
+                                <a href="#about-area" title="">Description</a>
+
+                                <a href="#review-detail" title="">Reviews</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 hl-features-cn">
+                            <script type="text/javascript">
+                                var clock;
+
+                                $(document).ready(function() {
+                                    var clock;
+                                    var dpb=new Date('{{ promoHotel.dateBegin | date('Y') }}-{{ promoHotel.dateBegin | date('m') }}-{{ promoHotel.dateBegin | date('d') }}');
+                                    var dpf=new Date('{{ promoHotel.dateEnd | date('Y') }}-{{ promoHotel.dateEnd | date('m') }}-{{ promoHotel.dateEnd | date('d') }}');
+
+
+                                    var date = new Date(2017, 6, 30);
+                                    var now = new Date();
+                                    var diff = (dpb.getTime()/1000) - (now.getTime()/1000);
+
+                                    clock = $('.clock').FlipClock(diff,{
+                                        clockFace: 'DailyCounter',
+                                        countdown: true
+
+                                    });
+
+
+                                    clock.start();
+
+                                });
+                            </script>
+                            <div class="row">
+
+                                <h3> Time until the Promo Starts </h3>
+                               <div class="clock" style="margin:2em;"> <h3> Time until the Promo Starts </h3> </div>
+                                <div class="message"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End Hotel Features -->
+                <!-- End About Area -->
+
+
+                <!-- Hotel Detail Reviews -->
+                <section class="review-detail detail-cn" id="review-detail">
+                    <div class="row">
+                        <div class="col-lg-3 detail-sidebar">
+                            <div class="scroll-heading">
+                                <h2>Reviews</h2>
+                                <hr class="hr">
+                                <a href="#check-rates" title="">{{ promoHotel.roomConcerned.name }}</a>
+                                <a href="#hl-features" title="">Countdown</a>
+
+                                <a href="#about-area" title="">Description</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 review-detail-cn">
+                            <!-- Review Tabs -->
+                            <div class="review-tabs">
+                                <!-- Tabs Head -->
+                                <ul class="tabs-head nav-tabs-one">
+
+                                    <li><a data-toggle="tab" href="#section2">Gstay Reviews</a></li>
+                                </ul>
+                                <!-- Tabs Head -->
+                                <!-- Tabs Content -->
+                                <div class="tab-content">
+
+                                    <div id="section2" class="tab-pane fade in active">
+
+                                    </div>
+                                </div>
+                                <!-- Tabs Content -->
+                            </div>
+                            <!-- End Review Tabs -->
+                            <!-- Review All -->
+                            <div class="review-all">
+                                <h4 class="review-h">
+                                    All reviews (365)
+                                </h4>
+                                <!-- Review Item -->
+                                <div class="row review-item">
+                                    <div class="col-xs-3 review-number">
+                                        <ins>5.6</ins>
+                                        <span>Isbawandi Zin</span>
+                                        <small>from London, UK, 3/2/ 2014</small>
+                                    </div>
+                                    <div class="col-xs-9 review-text">
+                                        <ul>
+                                            <li><span class="icon fa fa-plus"></span>Location, warmth, cleanliness</li>
+                                            <li><span class="icon icon-minus fa fa-minus"></span>Noisy, expensive</li>
+                                        </ul>
+                                        <p>
+                                            Our stay was pleasant and joyful. We stayed in an apartment meant for 3 adults. First and foremost, close proximity to tube station was the reason of choosing this hotel. The cleaning services were fantastic. The support services were prompt...
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- End Review Item -->
+
+                            </div>
+                            <!-- End Review All -->
+                        </div>
+                    </div>
+                </section>
+                <!-- End Hotel Detail Reviews -->
+
+                <section class="detail-footer detail-cn">
+                    <div class="row">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-9 detail-footer-cn">
+                            <!-- Show More Book -->
+                            <div class="row">
+                                <div class="col-xs-5 ">
+                                    <div class="review-more">
+                                        <a href="" title=""><i class="icon"></i> Show more reviews</a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-7 text-right">
+                                    <p class="price-book">
+
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- End Show More Book -->
+                        </div>
+                    </div>
+                </section>
+
+                <script type="text/javascript" src="js/library/SmoothScroll.js"></script>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+//twitter bootstrap script
+            $("#getbtn").click(function(){
+                var x=document.getElementById('debut').value;
+                var y=document.getElementById('fin').value;
+
+
+                var d1= new Date(x);
+                var d2= new Date(y);
+                var dpb=new Date('{{ promoHotel.dateBegin | date('Y') }}-{{ promoHotel.dateBegin | date('m') }}-{{ promoHotel.dateBegin | date('d') }}');
+               var dpf=new Date('{{ promoHotel.dateEnd | date('Y') }}-{{ promoHotel.dateEnd | date('m') }}-{{ promoHotel.dateEnd | date('d') }}');
+
+
+                var timeDiff = Math.abs(d2.getTime() - d1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                var d3 = new Date();
+
+                if ( d3 > d2 ){
+
+                    Lobibox.notify('warning', {
+                        size: 'large',
+                        msg: '  Check in date is invalid'
+                    });
+
+                    return false;
+                } //date now
+if ( d1 > d2 ){
+
+        Lobibox.notify('warning', {
+            size: 'large',
+            msg: '  Check in date is invalid '
+        });
+
+    return false;
+} //Controle datebegin date fin.
+                if ( dpb > d1 ){
+
+                    Lobibox.notify('warning', {
+                        size: 'large',
+                        msg: '  Check in date Must be in range of Dates of this promotion '
+                    });
+
+                    return false;
+                }// ctrl date begin promo date begin res 1
+                if ( dpf < d2 ){
+
+                    Lobibox.notify('warning', {
+                        size: 'large',
+                        msg: '  Check out date Must be in range of Dates of this promotion '
+                    });
+
+                    return false;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ asset('ajax/getreservation.php') }}",
+                    data: $('form.controleticket').serialize(),
+                    success: function(msg){
+                        document.getElementById('keygen').innerHTML=msg+' '+'Please Bring this Key when you Check In';
+                        Lobibox.notify('success', {
+                            size: 'large',
+                            msg: '  please check your email to get your ticket . thank you for choosing us  '
+                        });
+                        setTimeout(function(){
+                            $('#closex').click();
+                        }, 10000);
+
+
+                        document.getElementById('ticketnumber').value=1;
+                        document.getElementById('debut').value="";
+                        document.getElementById('fin').value="";
+                        document.getElementById('prixtotal').innerHTML ="";
+                        document.getElementById('getbtn').setAttribute('disabled','disabled');
+                    },
+                    error: function(){
+                        alert("failure");
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script >
+
+
+
+        function checknbticket(x,p,idpromo) {
+            var z=document.getElementById('debut').value;
+            var y=document.getElementById('fin').value;
+            var d1= new Date(z);
+            var d2= new Date(y);
+
+            var timeDiff = Math.abs(d2.getTime() - d1.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            var p = document.getElementById('pourcentage').value;
+            var nb = document.getElementById('ticketnumber').value;
+            var prixtotal = (x - x * p / 100) * nb * diffDays ;
+            document.getElementById('prixtotal').innerHTML = "Total price: "+prixtotal+" DT "  ;
+
+            var khaled = new XMLHttpRequest();
+            khaled.open("get","{{ asset('ajax/promomodaltest.php?nb') }}="+nb+"&idpromo="+idpromo,true);
+            khaled.send() // avec le GET  les parametre sont vides ;
+            khaled.onreadystatechange = function result()
+            {
+                document.getElementById("error").innerHTML= khaled.responseText;
+
+
+
+            }
+            var error = document.getElementById('error').innerHTML;
+            if(error.length > 0 )
+            {
+                document.getElementById('getbtn').setAttribute('disabled','disabled');
+
+            }else {
+                document.getElementById('getbtn').removeAttribute("disabled");
+            }
+
+
+
+        }
+
+
+
+
+
+
+    </script>
+
+{% endblock %}
+  {% block js %}
+      <script type="text/javascript" src="{{ asset('jTable/jquery-2.1.4.min.js') }}"></script>
+      <script type="text/javascript" src="{{ asset('jTable/jquery.dataTables.min.js') }}"></script>
+      <script type="text/javascript">$(document).ready(function() {
+              $('#example').DataTable();
+          } );
+      </script>
+      <script src="{{ asset('bundles/app/plugin/flip/compiled/flipclock.js') }}"></script>
+
+      <script src="{{ asset('notif/lobibox.js') }}"></script>
+  {% endblock js %}
